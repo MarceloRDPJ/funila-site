@@ -339,6 +339,23 @@
 </head>
 <body>
 
+<!-- NAVIGATION -->
+<nav style="
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 32px; height: 64px;
+  background: rgba(15, 17, 21, 0.85);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+">
+  <div style="font-family: 'Syne', sans-serif; font-weight: 800; font-size: 18px; letter-spacing: 0.1em; color: var(--text);">FUNILA<span style="color: var(--blue);">.</span></div>
+  <a href="public/brandbook.html" class="btn-outline" style="
+    text-decoration: none; padding: 6px 16px; font-size: 13px; border-radius: 6px;
+    font-family: 'DM Sans', sans-serif; font-weight: 500;
+    transition: all 0.2s;
+  ">Conheça a Marca</a>
+</nav>
+
 <!-- INTRO SECTION -->
 <section class="intro-section">
   <!-- Vinheta cinematográfica -->
@@ -408,9 +425,9 @@
 <main>
 
   <!-- HERO TEXT -->
-  <section class="section hero-text-section">
+  <section class="section hero-text-section" style="padding-top: 140px;">
     <h1 class="hero-title">Afunila o clique.<br>Entrega o cliente.</h1>
-    <p class="hero-desc">O Funila transforma o caos do tráfego pago em leads qualificados no WhatsApp. Chega de receber "Oi" de quem não tem perfil.</p>
+    <p class="hero-desc">Transforme cliques em leads qualificados no WhatsApp. Chega de receber "Oi" de quem não tem perfil de compra.</p>
     <a href="https://wa.me/5562996780498?text=Ol%C3%A1!%20Tenho%20interesse%20na%20lista%20de%20espera%20do%20Funila." class="btn btn-primary" target="_blank">Entrar na Lista de Espera</a>
   </section>
 
@@ -502,12 +519,17 @@
       Em Desenvolvimento
     </div>
     <h2 class="section-title">Chega de perder dinheiro com lead frio.</h2>
-    <p style="color: var(--text2); max-width: 500px; margin: 0 auto 40px;">O Funila está em fase final de construção. Garanta sua vaga na lista de espera e receba condições exclusivas de lançamento.</p>
+    <p style="color: var(--text2); max-width: 600px; margin: 0 auto 40px;">O Funila está em fase final de construção. Garanta sua vaga na lista de espera para receber condições exclusivas.</p>
 
-    <a href="https://wa.me/5562996780498?text=Ol%C3%A1!%20Gostaria%20de%20entrar%20na%20lista%20de%20espera%20do%20Funila." class="btn btn-primary" target="_blank" style="padding: 16px 40px; font-size: 18px;">
-      Entrar na Lista de Espera
-    </a>
-    <p style="margin-top: 24px; font-size: 12px; color: var(--text3);">Acesso antecipado limitado.</p>
+    <div style="display: flex; flex-direction: column; align-items: center; gap: 24px;">
+      <a href="https://wa.me/5562996780498?text=Ol%C3%A1!%20Gostaria%20de%20entrar%20na%20lista%20de%20espera%20do%20Funila." class="btn btn-primary" target="_blank" style="padding: 16px 40px; font-size: 18px;">
+        Entrar na Lista de Espera
+      </a>
+
+      <a href="public/brandbook.html" style="color: var(--text3); font-size: 14px; text-decoration: none; border-bottom: 1px solid transparent; transition: all 0.2s;">
+        Conheça um pouco mais sobre nós →
+      </a>
+    </div>
   </section>
 
 </main>
