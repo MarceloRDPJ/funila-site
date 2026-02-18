@@ -1,0 +1,975 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Funila — Brandbook Oficial</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg:       #0A0C10;
+    --bg2:      #0F1217;
+    --bg3:      #161B24;
+    --card:     #1A2030;
+    --border:   #242D3E;
+    --border2:  #2E3A50;
+    --text:     #EDF2FF;
+    --text2:    #8896AC;
+    --text3:    #4F5E75;
+    --blue:     #2563EB;
+    --blue-h:   #1D4ED8;
+    --blue-s:   #DBEAFE;
+    --blue-d:   #1E40AF;
+    --hot:      #22C55E;
+    --warm:     #F59E0B;
+    --cold:     #38BDF8;
+    --conv:     #16A34A;
+    --err:      #EF4444;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 48px; height: 64px;
+    background: rgba(10,12,16,0.85);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 20px; letter-spacing: 0.1em; color: var(--text); }
+  .nav-logo span { color: var(--blue); }
+  .nav-links { display: flex; gap: 32px; }
+  .nav-links a { color: var(--text2); font-size: 14px; text-decoration: none; transition: color 0.2s; }
+  .nav-links a:hover { color: var(--text); }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center;
+    padding: 120px 48px 80px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-glow {
+    position: absolute;
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(37,99,235,0.15) 0%, transparent 70%);
+    top: 50%; left: 50%; transform: translate(-50%, -50%);
+    pointer-events: none;
+  }
+
+  .hero-grid {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(37,99,235,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(37,99,235,0.04) 1px, transparent 1px);
+    background-size: 48px 48px;
+    pointer-events: none;
+  }
+
+  .hero-tag {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--bg3); border: 1px solid var(--border2);
+    border-radius: 100px; padding: 6px 16px;
+    font-size: 12px; font-weight: 500; color: var(--blue);
+    letter-spacing: 0.08em; text-transform: uppercase;
+    margin-bottom: 32px;
+  }
+  .hero-tag-dot { width: 6px; height: 6px; background: var(--blue); border-radius: 50%; animation: pulse 2s ease-in-out infinite; }
+  @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(0.8)} }
+
+  .hero h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(72px, 12vw, 140px);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 0.9;
+    color: var(--text);
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero-sub {
+    font-size: 18px; color: var(--text2); max-width: 480px; margin: 24px auto 0;
+    position: relative; z-index: 1;
+    font-weight: 300; letter-spacing: 0.02em;
+  }
+
+  /* ── LOGO MARK ── */
+  .logo-mark {
+    position: relative; z-index: 1;
+    margin-bottom: 48px;
+  }
+
+  .logo-mark svg { width: 80px; height: 80px; }
+
+  /* ── SECTIONS ── */
+  section {
+    padding: 100px 48px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px; font-weight: 500;
+    color: var(--blue); letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .section-label::after {
+    content: ''; flex: 1; height: 1px;
+    background: linear-gradient(90deg, var(--border2), transparent);
+  }
+
+  .section-title {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(36px, 5vw, 56px);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1;
+    margin-bottom: 48px;
+    color: var(--text);
+  }
+
+  /* ── LOGO SECTION ── */
+  .logo-showcase {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px;
+    border-radius: 16px; overflow: hidden;
+    margin-bottom: 48px;
+  }
+
+  .logo-variant {
+    aspect-ratio: 4/3;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 16px; padding: 40px;
+  }
+
+  .logo-variant.dark  { background: #0A0C10; }
+  .logo-variant.light { background: #F8FAFC; }
+  .logo-variant.blue  { background: var(--blue); }
+
+  .logo-wordmark {
+    font-family: 'Syne', sans-serif;
+    font-size: 32px; font-weight: 800;
+    letter-spacing: 0.05em;
+  }
+  .logo-wordmark.on-dark  { color: #EDF2FF; }
+  .logo-wordmark.on-light { color: #0A0C10; }
+  .logo-wordmark.on-blue  { color: #FFFFFF; }
+
+  .logo-tagline {
+    font-size: 10px; font-weight: 500;
+    letter-spacing: 0.2em; text-transform: uppercase;
+  }
+  .logo-tagline.on-dark  { color: #4F5E75; }
+  .logo-tagline.on-light { color: #94A3B8; }
+  .logo-tagline.on-blue  { color: rgba(255,255,255,0.6); }
+
+  .variant-label {
+    font-size: 11px; color: var(--text3);
+    font-family: 'DM Mono', monospace; letter-spacing: 0.1em;
+    text-align: center; padding: 12px;
+    background: var(--bg2); border-top: 1px solid var(--border);
+  }
+
+  /* ── SÍMBOLO DA MARCA ── */
+  .symbol-section {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center;
+    margin-bottom: 64px;
+  }
+
+  .symbol-display {
+    background: var(--bg3); border: 1px solid var(--border);
+    border-radius: 20px; padding: 64px;
+    display: flex; align-items: center; justify-content: center;
+    position: relative; overflow: hidden;
+  }
+
+  .symbol-display::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(circle at 50% 50%, rgba(37,99,235,0.08), transparent 70%);
+  }
+
+  .symbol-explain { display: flex; flex-direction: column; gap: 24px; }
+
+  .explain-item { display: flex; gap: 16px; align-items: flex-start; }
+  .explain-num {
+    font-family: 'DM Mono', monospace; font-size: 11px;
+    color: var(--blue); min-width: 24px; margin-top: 2px;
+  }
+  .explain-text h4 {
+    font-family: 'Syne', sans-serif; font-weight: 700;
+    font-size: 15px; margin-bottom: 4px;
+  }
+  .explain-text p { font-size: 14px; color: var(--text2); line-height: 1.5; }
+
+  /* ── CORES ── */
+  .color-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px;
+    margin-bottom: 48px;
+  }
+
+  .color-card {
+    border-radius: 12px; overflow: hidden;
+    border: 1px solid var(--border);
+  }
+
+  .color-swatch {
+    height: 100px;
+    display: flex; align-items: flex-end; padding: 12px;
+  }
+
+  .color-hex {
+    font-family: 'DM Mono', monospace; font-size: 11px;
+    font-weight: 500; opacity: 0.7;
+  }
+
+  .color-info {
+    background: var(--bg3); padding: 14px 16px;
+  }
+  .color-name { font-weight: 600; font-size: 14px; margin-bottom: 2px; }
+  .color-role { font-size: 12px; color: var(--text2); }
+
+  /* Status colors */
+  .status-grid {
+    display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px;
+    margin-bottom: 64px;
+  }
+
+  .status-card {
+    border-radius: 12px; overflow: hidden;
+    border: 1px solid var(--border);
+    text-align: center;
+  }
+
+  .status-swatch {
+    height: 64px; display: flex; align-items: center; justify-content: center;
+    font-size: 24px;
+  }
+
+  .status-info { background: var(--bg3); padding: 12px; }
+  .status-name { font-weight: 600; font-size: 13px; margin-bottom: 2px; }
+  .status-hex { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--text2); }
+
+  /* ── TIPOGRAFIA ── */
+  .type-showcase { display: flex; flex-direction: column; gap: 32px; margin-bottom: 64px; }
+
+  .type-block {
+    background: var(--bg3); border: 1px solid var(--border);
+    border-radius: 16px; padding: 40px;
+    display: grid; grid-template-columns: 1fr 2fr; gap: 32px; align-items: center;
+  }
+
+  .type-meta { }
+  .type-meta-label { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--blue); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 8px; }
+  .type-meta-name { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 18px; margin-bottom: 4px; }
+  .type-meta-use { font-size: 13px; color: var(--text2); }
+
+  .type-preview-syne { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 48px; letter-spacing: -0.02em; line-height: 1; color: var(--text); }
+  .type-preview-dm { font-family: 'DM Sans', sans-serif; font-size: 18px; color: var(--text2); line-height: 1.6; font-weight: 300; }
+  .type-preview-mono { font-family: 'DM Mono', monospace; font-size: 14px; color: var(--blue); }
+
+  /* ── REGRAS ── */
+  .rules-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 64px; }
+
+  .rule-card {
+    background: var(--bg3); border: 1px solid var(--border);
+    border-radius: 12px; padding: 28px;
+    display: flex; gap: 16px; align-items: flex-start;
+  }
+
+  .rule-num {
+    font-family: 'Syne', sans-serif; font-weight: 800;
+    font-size: 36px; color: var(--border2); line-height: 1;
+    min-width: 40px;
+  }
+
+  .rule-content h4 { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 15px; margin-bottom: 6px; }
+  .rule-content p { font-size: 13px; color: var(--text2); line-height: 1.5; }
+
+  /* ── PROIBIÇÕES ── */
+  .dont-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 64px; }
+
+  .dont-card {
+    border-radius: 12px; overflow: hidden;
+    border: 1px solid rgba(239,68,68,0.2);
+  }
+
+  .dont-preview {
+    height: 100px; display: flex; align-items: center; justify-content: center;
+    position: relative;
+  }
+  .dont-preview::after {
+    content: '✕';
+    position: absolute; top: 8px; right: 8px;
+    font-size: 12px; color: var(--err);
+    background: rgba(239,68,68,0.15); border-radius: 4px;
+    width: 20px; height: 20px; display: flex; align-items: center; justify-content: center;
+  }
+
+  .dont-info { background: var(--bg3); padding: 14px 16px; }
+  .dont-title { font-weight: 600; font-size: 13px; color: var(--err); margin-bottom: 4px; }
+  .dont-desc { font-size: 12px; color: var(--text2); }
+
+  /* ── LAYOUT PREVIEW ── */
+  .layout-preview {
+    background: var(--bg3); border: 1px solid var(--border);
+    border-radius: 20px; overflow: hidden;
+    margin-bottom: 64px;
+  }
+
+  .preview-bar {
+    background: var(--bg2); border-bottom: 1px solid var(--border);
+    padding: 12px 20px; display: flex; align-items: center; gap: 8px;
+  }
+  .dot { width: 10px; height: 10px; border-radius: 50%; }
+  .dot.r { background: #EF4444; } .dot.y { background: #F59E0B; } .dot.g { background: #22C55E; }
+  .preview-url { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--text3); margin-left: 12px; }
+
+  .app-shell {
+    display: grid; grid-template-columns: 200px 1fr;
+    height: 440px;
+  }
+
+  .app-sidebar {
+    background: #0F1217; border-right: 1px solid var(--border);
+    padding: 20px 0; display: flex; flex-direction: column;
+  }
+
+  .sidebar-brand {
+    font-family: 'Syne', sans-serif; font-weight: 800;
+    font-size: 16px; color: var(--text); padding: 0 20px 20px;
+    border-bottom: 1px solid var(--border);
+    letter-spacing: 0.05em;
+  }
+
+  .sidebar-nav { padding: 16px 0; flex: 1; }
+
+  .sidebar-item {
+    display: flex; align-items: center; gap: 10px;
+    padding: 9px 20px; font-size: 13px;
+    cursor: pointer; transition: all 0.15s;
+    color: var(--text2);
+  }
+  .sidebar-item.active {
+    color: var(--blue); background: rgba(37,99,235,0.08);
+    border-right: 2px solid var(--blue);
+  }
+  .sidebar-item-icon { font-size: 14px; }
+
+  .sidebar-footer {
+    padding: 16px 20px;
+    border-top: 1px solid var(--border);
+  }
+  .plan-badge {
+    display: inline-block; background: rgba(37,99,235,0.15);
+    color: var(--blue); font-size: 10px; font-weight: 600;
+    border-radius: 4px; padding: 3px 8px; letter-spacing: 0.08em;
+    text-transform: uppercase; margin-bottom: 10px;
+  }
+  .sidebar-user { font-size: 12px; color: var(--text3); }
+
+  .app-main { display: flex; flex-direction: column; }
+
+  .app-topbar {
+    background: #0F1217; border-bottom: 1px solid var(--border);
+    height: 48px; display: flex; align-items: center;
+    padding: 0 20px; gap: 12px;
+  }
+  .breadcrumb { font-size: 12px; color: var(--text3); }
+  .breadcrumb span { color: var(--text2); }
+  .topbar-right { margin-left: auto; display: flex; gap: 10px; align-items: center; }
+  .period-sel {
+    background: var(--bg3); border: 1px solid var(--border);
+    border-radius: 6px; padding: 4px 10px; font-size: 11px; color: var(--text2);
+    font-family: 'DM Sans', sans-serif;
+  }
+  .avatar {
+    width: 28px; height: 28px; border-radius: 50%;
+    background: var(--blue); font-size: 11px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center; color: white;
+  }
+
+  .app-content { flex: 1; padding: 20px; overflow: hidden; }
+
+  .metrics-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 16px; }
+  .metric-card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 10px; padding: 14px 16px;
+  }
+  .metric-label { font-size: 10px; color: var(--text2); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.08em; }
+  .metric-val { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 22px; }
+  .metric-val.hot { color: var(--hot); }
+  .metric-val.blue { color: var(--blue); }
+  .metric-val.warm { color: var(--warm); }
+
+  .mini-table { background: var(--card); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+  .mini-table-header { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; padding: 8px 14px; font-size: 10px; color: var(--text3); letter-spacing: 0.08em; text-transform: uppercase; border-bottom: 1px solid var(--border); }
+  .mini-table-row { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; padding: 9px 14px; font-size: 12px; border-bottom: 1px solid rgba(36,45,62,0.5); align-items: center; }
+  .badge {
+    display: inline-flex; align-items: center; gap: 4px;
+    border-radius: 4px; padding: 2px 7px; font-size: 10px; font-weight: 600;
+  }
+  .badge.hot { background: rgba(34,197,94,0.12); color: var(--hot); }
+  .badge.warm { background: rgba(245,158,11,0.12); color: var(--warm); }
+  .badge.cold { background: rgba(56,189,248,0.12); color: var(--cold); }
+
+  /* ── CSS VARS ── */
+  .code-block {
+    background: #0D1117; border: 1px solid var(--border);
+    border-radius: 12px; padding: 28px; overflow-x: auto;
+    margin-bottom: 64px;
+  }
+  .code-block pre { font-family: 'DM Mono', monospace; font-size: 13px; line-height: 1.8; }
+  .c-comment { color: #4F5E75; }
+  .c-prop { color: #38BDF8; }
+  .c-val { color: #A5F3FC; }
+  .c-hex { color: #22C55E; }
+  .c-sel { color: #F59E0B; }
+
+  /* ── FOOTER ── */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 40px 48px;
+    display: flex; align-items: center; justify-content: space-between;
+    max-width: 1100px; margin: 0 auto;
+  }
+  .footer-brand { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 16px; letter-spacing: 0.05em; }
+  .footer-meta { font-size: 13px; color: var(--text3); }
+
+  /* ── DIVIDER ── */
+  .divider { height: 1px; background: var(--border); max-width: 1100px; margin: 0 auto; }
+
+  /* SVG LOGO */
+  .funila-svg .bar1 { fill: #2563EB; }
+  .funila-svg .bar2 { fill: #1E40AF; }
+  .funila-svg .bar3 { fill: #1D4ED8; }
+
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">FUNILA<span>.</span></div>
+  <div class="nav-links">
+    <a href="#logo">Logo</a>
+    <a href="#cores">Cores</a>
+    <a href="#tipografia">Tipografia</a>
+    <a href="#layout">Layout</a>
+    <a href="#codigo">Código</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-glow"></div>
+
+  <div class="logo-mark">
+    <svg viewBox="0 0 80 72" fill="none" xmlns="http://www.w3.org/2000/svg" class="funila-svg">
+      <!-- Três barras em forma de funil/chevron - diminuindo da esquerda para a direita -->
+      <!-- Barra superior - maior -->
+      <rect x="0" y="0" width="62" height="18" rx="4" class="bar1"/>
+      <polygon points="62,0 80,9 62,18" class="bar1"/>
+      <!-- Barra do meio -->
+      <rect x="0" y="27" width="48" height="18" rx="4" class="bar2"/>
+      <polygon points="48,27 66,36 48,45" class="bar2"/>
+      <!-- Barra inferior - menor -->
+      <rect x="0" y="54" width="34" height="18" rx="4" class="bar3"/>
+      <polygon points="34,54 52,63 34,72" class="bar3"/>
+    </svg>
+  </div>
+
+  <div class="hero-tag">
+    <div class="hero-tag-dot"></div>
+    Brandbook Oficial 2026
+  </div>
+
+  <h1>FUNILA</h1>
+  <p class="hero-sub">Sistema de Inteligência Comercial — Guia completo de identidade visual e marca</p>
+</div>
+
+<div class="divider"></div>
+
+<!-- LOGO -->
+<section id="logo">
+  <div class="section-label">01 — Identidade</div>
+  <h2 class="section-title">Logo & Símbolo</h2>
+
+  <!-- Símbolo -->
+  <div class="symbol-section">
+    <div>
+      <div class="symbol-display">
+        <svg width="120" height="108" viewBox="0 0 80 72" fill="none" class="funila-svg">
+          <rect x="0" y="0" width="62" height="18" rx="4" class="bar1"/>
+          <polygon points="62,0 80,9 62,18" class="bar1"/>
+          <rect x="0" y="27" width="48" height="18" rx="4" class="bar2"/>
+          <polygon points="48,27 66,36 48,45" class="bar2"/>
+          <rect x="0" y="54" width="34" height="18" rx="4" class="bar3"/>
+          <polygon points="34,54 52,63 34,72" class="bar3"/>
+        </svg>
+      </div>
+    </div>
+
+    <div class="symbol-explain">
+      <div class="explain-item">
+        <div class="explain-num">01</div>
+        <div class="explain-text">
+          <h4>Três Barras em Afunilamento</h4>
+          <p>Representam o funil de vendas — muitos cliques entram, poucos leads qualificados saem. O símbolo comunica o produto sem precisar de texto.</p>
+        </div>
+      </div>
+      <div class="explain-item">
+        <div class="explain-num">02</div>
+        <div class="explain-text">
+          <h4>Chevron Apontando para a Direita</h4>
+          <p>A ponta de cada barra indica movimento, direção, progresso. O lead avança pelo funil. O negócio avança.</p>
+        </div>
+      </div>
+      <div class="explain-item">
+        <div class="explain-num">03</div>
+        <div class="explain-text">
+          <h4>Azul Sólido — Sem Gradiente</h4>
+          <p>Três tons do azul primário. Sólido, firme, confiável. Nunca usar gradiente exagerado ou neon no símbolo.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Variações do logo wordmark -->
+  <div style="margin-bottom:4px;">
+    <div class="logo-showcase">
+      <div>
+        <div class="logo-variant dark">
+          <svg width="48" height="43" viewBox="0 0 80 72" fill="none" class="funila-svg">
+            <rect x="0" y="0" width="62" height="18" rx="4" class="bar1"/>
+            <polygon points="62,0 80,9 62,18" class="bar1"/>
+            <rect x="0" y="27" width="48" height="18" rx="4" class="bar2"/>
+            <polygon points="48,27 66,36 48,45" class="bar2"/>
+            <rect x="0" y="54" width="34" height="18" rx="4" class="bar3"/>
+            <polygon points="34,54 52,63 34,72" class="bar3"/>
+          </svg>
+          <div class="logo-wordmark on-dark">FUNILA</div>
+          <div class="logo-tagline on-dark">Sistema de Inteligência Comercial</div>
+        </div>
+        <div class="variant-label">VERSÃO ESCURA — Padrão oficial</div>
+      </div>
+      <div>
+        <div class="logo-variant light">
+          <svg width="48" height="43" viewBox="0 0 80 72" fill="none">
+            <rect x="0" y="0" width="62" height="18" rx="4" fill="#1E40AF"/>
+            <polygon points="62,0 80,9 62,18" fill="#1E40AF"/>
+            <rect x="0" y="27" width="48" height="18" rx="4" fill="#2563EB"/>
+            <polygon points="48,27 66,36 48,45" fill="#2563EB"/>
+            <rect x="0" y="54" width="34" height="18" rx="4" fill="#1D4ED8"/>
+            <polygon points="34,54 52,63 34,72" fill="#1D4ED8"/>
+          </svg>
+          <div class="logo-wordmark on-light">FUNILA</div>
+          <div class="logo-tagline on-light">Sistema de Inteligência Comercial</div>
+        </div>
+        <div class="variant-label">VERSÃO CLARA — Documentos e apresentações</div>
+      </div>
+      <div>
+        <div class="logo-variant blue">
+          <svg width="48" height="43" viewBox="0 0 80 72" fill="none">
+            <rect x="0" y="0" width="62" height="18" rx="4" fill="rgba(255,255,255,0.9)"/>
+            <polygon points="62,0 80,9 62,18" fill="rgba(255,255,255,0.9)"/>
+            <rect x="0" y="27" width="48" height="18" rx="4" fill="rgba(255,255,255,0.7)"/>
+            <polygon points="48,27 66,36 48,45" fill="rgba(255,255,255,0.7)"/>
+            <rect x="0" y="54" width="34" height="18" rx="4" fill="rgba(255,255,255,0.5)"/>
+            <polygon points="34,54 52,63 34,72" fill="rgba(255,255,255,0.5)"/>
+          </svg>
+          <div class="logo-wordmark on-blue">FUNILA</div>
+          <div class="logo-tagline on-blue">Sistema de Inteligência Comercial</div>
+        </div>
+        <div class="variant-label">VERSÃO AZUL — Materiais de marketing</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- CORES -->
+<section id="cores">
+  <div class="section-label">02 — Paleta</div>
+  <h2 class="section-title">Sistema de Cores</h2>
+
+  <!-- Primárias -->
+  <p style="font-size:13px;color:var(--text2);margin-bottom:24px;font-family:'DM Mono',monospace;letter-spacing:0.05em;">AZUL PRIMÁRIO — assinatura da marca</p>
+  <div class="color-grid">
+    <div class="color-card">
+      <div class="color-swatch" style="background:#2563EB;">
+        <span class="color-hex" style="color:rgba(255,255,255,0.5)">#2563EB</span>
+      </div>
+      <div class="color-info">
+        <div class="color-name">Primary 500</div>
+        <div class="color-role">Botões, links, elementos ativos</div>
+      </div>
+    </div>
+    <div class="color-card">
+      <div class="color-swatch" style="background:#1D4ED8;">
+        <span class="color-hex" style="color:rgba(255,255,255,0.5)">#1D4ED8</span>
+      </div>
+      <div class="color-info">
+        <div class="color-name">Primary Hover</div>
+        <div class="color-role">Estado hover, interações</div>
+      </div>
+    </div>
+    <div class="color-card">
+      <div class="color-swatch" style="background:#DBEAFE;">
+        <span class="color-hex" style="color:rgba(37,99,235,0.5)">#DBEAFE</span>
+      </div>
+      <div class="color-info" style="background:#F1F5F9;">
+        <div class="color-name" style="color:#0F172A;">Primary Soft</div>
+        <div class="color-role" style="color:#64748B;">Badges, fundos suaves</div>
+      </div>
+    </div>
+    <div class="color-card">
+      <div class="color-swatch" style="background:#1E40AF;">
+        <span class="color-hex" style="color:rgba(255,255,255,0.4)">#1E40AF</span>
+      </div>
+      <div class="color-info">
+        <div class="color-name">Primary Dark</div>
+        <div class="color-role">Acento em fundos escuros</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Dark theme bases -->
+  <p style="font-size:13px;color:var(--text2);margin-bottom:24px;font-family:'DM Mono',monospace;letter-spacing:0.05em;">DARK THEME — padrão do sistema</p>
+  <div class="color-grid">
+    <div class="color-card">
+      <div class="color-swatch" style="background:#0F1115;border:1px solid #2A3242;">
+        <span class="color-hex" style="color:rgba(255,255,255,0.2)">#0F1115</span>
+      </div>
+      <div class="color-info"><div class="color-name">Background</div><div class="color-role">Fundo principal da aplicação</div></div>
+    </div>
+    <div class="color-card">
+      <div class="color-swatch" style="background:#161A22;border:1px solid #2A3242;">
+        <span class="color-hex" style="color:rgba(255,255,255,0.2)">#161A22</span>
+      </div>
+      <div class="color-info"><div class="color-name">Background 2</div><div class="color-role">Sidebar, topbar, painéis</div></div>
+    </div>
+    <div class="color-card">
+      <div class="color-swatch" style="background:#1C212B;border:1px solid #2A3242;">
+        <span class="color-hex" style="color:rgba(255,255,255,0.2)">#1C212B</span>
+      </div>
+      <div class="color-info"><div class="color-name">Card</div><div class="color-role">Cards, modais, superfícies</div></div>
+    </div>
+    <div class="color-card">
+      <div class="color-swatch" style="background:#2A3242;border:1px solid #2A3242;">
+        <span class="color-hex" style="color:rgba(255,255,255,0.3)">#2A3242</span>
+      </div>
+      <div class="color-info"><div class="color-name">Border</div><div class="color-role">Bordas, divisores, separadores</div></div>
+    </div>
+  </div>
+
+  <!-- Status -->
+  <p style="font-size:13px;color:var(--text2);margin-bottom:24px;font-family:'DM Mono',monospace;letter-spacing:0.05em;">STATUS — fixos em dark e light</p>
+  <div class="status-grid">
+    <div class="status-card">
+      <div class="status-swatch" style="background:rgba(34,197,94,0.1)">🔥</div>
+      <div class="status-info"><div class="status-name" style="color:#22C55E">Quente</div><div class="status-hex">#22C55E</div></div>
+    </div>
+    <div class="status-card">
+      <div class="status-swatch" style="background:rgba(245,158,11,0.1)">🟡</div>
+      <div class="status-info"><div class="status-name" style="color:#F59E0B">Morno</div><div class="status-hex">#F59E0B</div></div>
+    </div>
+    <div class="status-card">
+      <div class="status-swatch" style="background:rgba(56,189,248,0.1)">❄️</div>
+      <div class="status-info"><div class="status-name" style="color:#38BDF8">Frio</div><div class="status-hex">#38BDF8</div></div>
+    </div>
+    <div class="status-card">
+      <div class="status-swatch" style="background:rgba(22,163,74,0.1)">✅</div>
+      <div class="status-info"><div class="status-name" style="color:#16A34A">Convertido</div><div class="status-hex">#16A34A</div></div>
+    </div>
+    <div class="status-card">
+      <div class="status-swatch" style="background:rgba(239,68,68,0.1)">❌</div>
+      <div class="status-info"><div class="status-name" style="color:#EF4444">Erro</div><div class="status-hex">#EF4444</div></div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- TIPOGRAFIA -->
+<section id="tipografia">
+  <div class="section-label">03 — Tipografia</div>
+  <h2 class="section-title">Fontes Oficiais</h2>
+
+  <div class="type-showcase">
+    <div class="type-block">
+      <div class="type-meta">
+        <div class="type-meta-label">Display</div>
+        <div class="type-meta-name">Syne</div>
+        <div class="type-meta-use">Títulos, logo wordmark, números de destaque, headings de seção</div>
+      </div>
+      <div class="type-preview-syne">FUNILA<br>v1.0</div>
+    </div>
+
+    <div class="type-block">
+      <div class="type-meta">
+        <div class="type-meta-label">Body</div>
+        <div class="type-meta-name">DM Sans</div>
+        <div class="type-meta-use">Texto corrido, labels, descrições, interface geral</div>
+      </div>
+      <div class="type-preview-dm">Afunila o clique.<br>Entrega o cliente qualificado.</div>
+    </div>
+
+    <div class="type-block">
+      <div class="type-meta">
+        <div class="type-meta-label">Mono</div>
+        <div class="type-meta-name">DM Mono</div>
+        <div class="type-meta-use">Código, HEX, labels técnicos, valores de dados, timestamps</div>
+      </div>
+      <div class="type-preview-mono">utm_source=instagram<br>#2563EB • app.funila.com.br</div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- REGRAS -->
+<section>
+  <div class="section-label">04 — Princípios</div>
+  <h2 class="section-title">Regras de Ouro</h2>
+
+  <div class="rules-grid">
+    <div class="rule-card">
+      <div class="rule-num">01</div>
+      <div class="rule-content">
+        <h4>Azul é a única cor dominante</h4>
+        <p>Nunca usar verde, vermelho ou amarelo como cor de destaque de interface. Essas cores existem apenas como status funcional.</p>
+      </div>
+    </div>
+    <div class="rule-card">
+      <div class="rule-num">02</div>
+      <div class="rule-content">
+        <h4>80% da tela é neutra</h4>
+        <p>Fundos escuros, cards, textos secundários preenchem a maior parte. O azul aparece com parcimônia — por isso impacta.</p>
+      </div>
+    </div>
+    <div class="rule-card">
+      <div class="rule-num">03</div>
+      <div class="rule-content">
+        <h4>Status são funcionais e fixos</h4>
+        <p>Verde = quente, amarelo = morno, azul claro = frio, vermelho = erro. Nunca mudam entre dark e light. Nunca usados como decoração.</p>
+      </div>
+    </div>
+    <div class="rule-card">
+      <div class="rule-num">04</div>
+      <div class="rule-content">
+        <h4>Nunca usar HEX direto no CSS</h4>
+        <p>Sempre usar as variáveis CSS — var(--blue), var(--card), var(--border). Qualquer componente novo herda o tema automaticamente.</p>
+      </div>
+    </div>
+    <div class="rule-card">
+      <div class="rule-num">05</div>
+      <div class="rule-content">
+        <h4>Logo sempre sólido</h4>
+        <p>Nunca aplicar gradiente exagerado, neon, sombra colorida ou efeito de brilho no logo. Três tons de azul, sólidos, firmes.</p>
+      </div>
+    </div>
+    <div class="rule-card">
+      <div class="rule-num">06</div>
+      <div class="rule-content">
+        <h4>Dark mode é o padrão</h4>
+        <p>O sistema inicia em dark. Light é opção do usuário. Nunca criar componente testado só em light e assumir que funciona no dark.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Proibições -->
+  <p style="font-size:13px;color:var(--err);margin-bottom:24px;font-family:'DM Mono',monospace;letter-spacing:0.05em;">NUNCA FAZER</p>
+  <div class="dont-grid">
+    <div class="dont-card">
+      <div class="dont-preview" style="background:#111;">
+        <span style="font-family:'Syne',sans-serif;font-size:28px;font-weight:800;background:linear-gradient(90deg,#a855f7,#2563eb,#06b6d4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">FUNILA</span>
+      </div>
+      <div class="dont-info">
+        <div class="dont-title">Gradiente no logo</div>
+        <div class="dont-desc">Logo sempre sólido, nunca texto em gradiente</div>
+      </div>
+    </div>
+    <div class="dont-card">
+      <div class="dont-preview" style="background:#111;">
+        <span style="font-family:'Arial',sans-serif;font-size:28px;font-weight:bold;color:#2563EB;">FUNILA</span>
+      </div>
+      <div class="dont-info">
+        <div class="dont-title">Fonte errada</div>
+        <div class="dont-desc">Sempre Syne para o wordmark, nunca Arial</div>
+      </div>
+    </div>
+    <div class="dont-card">
+      <div class="dont-preview" style="background:#111;">
+        <span style="font-family:'Syne',sans-serif;font-size:28px;font-weight:800;color:#00ff88;text-shadow:0 0 20px #00ff88;">FUNILA</span>
+      </div>
+      <div class="dont-info">
+        <div class="dont-title">Neon e brilho</div>
+        <div class="dont-desc">Nunca usar glow, neon ou cor saturada no logo</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- LAYOUT -->
+<section id="layout">
+  <div class="section-label">05 — Interface</div>
+  <h2 class="section-title">Layout do Sistema</h2>
+
+  <div class="layout-preview">
+    <div class="preview-bar">
+      <div class="dot r"></div><div class="dot y"></div><div class="dot g"></div>
+      <div class="preview-url">app.funila.com.br/dashboard</div>
+    </div>
+    <div class="app-shell">
+      <!-- Sidebar -->
+      <div class="app-sidebar">
+        <div class="sidebar-brand">FUNILA</div>
+        <div class="sidebar-nav">
+          <div class="sidebar-item active"><span class="sidebar-item-icon">🏠</span>Dashboard</div>
+          <div class="sidebar-item"><span class="sidebar-item-icon">📊</span>Leads</div>
+          <div class="sidebar-item"><span class="sidebar-item-icon">🔗</span>Links</div>
+          <div class="sidebar-item"><span class="sidebar-item-icon">📈</span>Campanhas</div>
+          <div class="sidebar-item"><span class="sidebar-item-icon">📥</span>Exportações</div>
+          <div class="sidebar-item"><span class="sidebar-item-icon">⚙️</span>Configurações</div>
+        </div>
+        <div class="sidebar-footer">
+          <div class="plan-badge">Profissional</div>
+          <div class="sidebar-user">João Corretor</div>
+        </div>
+      </div>
+
+      <!-- Main -->
+      <div class="app-main">
+        <div class="app-topbar">
+          <div class="breadcrumb">Dashboard <span>/ Leads</span></div>
+          <div class="topbar-right">
+            <select class="period-sel"><option>Este mês</option></select>
+            <div class="avatar">J</div>
+          </div>
+        </div>
+        <div class="app-content">
+          <div class="metrics-row">
+            <div class="metric-card">
+              <div class="metric-label">Total Cliques</div>
+              <div class="metric-val blue">1.247</div>
+            </div>
+            <div class="metric-card">
+              <div class="metric-label">Leads Recebidos</div>
+              <div class="metric-val" style="color:var(--text)">384</div>
+            </div>
+            <div class="metric-card">
+              <div class="metric-label">Leads Quentes</div>
+              <div class="metric-val hot">89</div>
+            </div>
+            <div class="metric-card">
+              <div class="metric-label">Conversão</div>
+              <div class="metric-val warm">30,8%</div>
+            </div>
+          </div>
+          <div class="mini-table">
+            <div class="mini-table-header"><span>Nome</span><span>Score</span><span>Status</span><span>Origem</span></div>
+            <div class="mini-table-row"><span>João Silva</span><span style="color:var(--hot);font-family:'DM Mono',monospace;font-size:11px;">92</span><span><div class="badge hot">🔥 Quente</div></span><span style="font-size:11px;color:var(--text3)">instagram</span></div>
+            <div class="mini-table-row"><span>Ana Rodrigues</span><span style="color:var(--warm);font-family:'DM Mono',monospace;font-size:11px;">67</span><span><div class="badge warm">🟡 Morno</div></span><span style="font-size:11px;color:var(--text3)">google</span></div>
+            <div class="mini-table-row"><span>Carlos Mendes</span><span style="color:var(--cold);font-family:'DM Mono',monospace;font-size:11px;">34</span><span><div class="badge cold">❄️ Frio</div></span><span style="font-size:11px;color:var(--text3)">facebook</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- CÓDIGO -->
+<section id="codigo">
+  <div class="section-label">06 — Implementação</div>
+  <h2 class="section-title">CSS Variables</h2>
+
+  <div class="code-block">
+    <pre><span class="c-comment">/* ── FUNILA DESIGN SYSTEM v1.0 ── */</span>
+
+<span class="c-sel">:root</span> {
+  <span class="c-comment">/* Azul Primário — assinatura da marca */</span>
+  <span class="c-prop">--blue</span>:          <span class="c-hex">#2563EB</span>;
+  <span class="c-prop">--blue-hover</span>:    <span class="c-hex">#1D4ED8</span>;
+  <span class="c-prop">--blue-soft</span>:     <span class="c-hex">#DBEAFE</span>;
+  <span class="c-prop">--blue-dark</span>:     <span class="c-hex">#1E40AF</span>;
+
+  <span class="c-comment">/* Dark Theme — padrão */</span>
+  <span class="c-prop">--bg-primary</span>:    <span class="c-hex">#0F1115</span>;
+  <span class="c-prop">--bg-secondary</span>:  <span class="c-hex">#161A22</span>;
+  <span class="c-prop">--card-bg</span>:       <span class="c-hex">#1C212B</span>;
+  <span class="c-prop">--hover-bg</span>:      <span class="c-hex">#242B38</span>;
+  <span class="c-prop">--border</span>:        <span class="c-hex">#2A3242</span>;
+
+  <span class="c-comment">/* Texto */</span>
+  <span class="c-prop">--text-primary</span>:  <span class="c-hex">#F8FAFC</span>;
+  <span class="c-prop">--text-secondary</span>:<span class="c-hex">#9CA3AF</span>;
+  <span class="c-prop">--text-disabled</span>: <span class="c-hex">#6B7280</span>;
+
+  <span class="c-comment">/* Status — fixos em dark e light */</span>
+  <span class="c-prop">--status-hot</span>:    <span class="c-hex">#22C55E</span>;
+  <span class="c-prop">--status-warm</span>:   <span class="c-hex">#F59E0B</span>;
+  <span class="c-prop">--status-cold</span>:   <span class="c-hex">#38BDF8</span>;
+  <span class="c-prop">--status-conv</span>:   <span class="c-hex">#16A34A</span>;
+  <span class="c-prop">--status-error</span>:  <span class="c-hex">#EF4444</span>;
+
+  <span class="c-comment">/* Tipografia */</span>
+  <span class="c-prop">--font-display</span>:  <span class="c-val">'Syne', sans-serif</span>;
+  <span class="c-prop">--font-body</span>:     <span class="c-val">'DM Sans', sans-serif</span>;
+  <span class="c-prop">--font-mono</span>:     <span class="c-val">'DM Mono', monospace</span>;
+}
+
+<span class="c-sel">.light-theme</span> {
+  <span class="c-prop">--bg-primary</span>:    <span class="c-hex">#F8FAFC</span>;
+  <span class="c-prop">--bg-secondary</span>:  <span class="c-hex">#F1F5F9</span>;
+  <span class="c-prop">--card-bg</span>:       <span class="c-hex">#FFFFFF</span>;
+  <span class="c-prop">--hover-bg</span>:      <span class="c-hex">#E2E8F0</span>;
+  <span class="c-prop">--border</span>:        <span class="c-hex">#E5E7EB</span>;
+  <span class="c-prop">--text-primary</span>:  <span class="c-hex">#0F172A</span>;
+  <span class="c-prop">--text-secondary</span>:<span class="c-hex">#475569</span>;
+  <span class="c-prop">--text-disabled</span>: <span class="c-hex">#94A3B8</span>;
+  <span class="c-comment">/* blue e status não mudam */</span>
+}</pre>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<footer style="max-width:100%;padding:40px 48px;display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--border);">
+  <div>
+    <div class="footer-brand">FUNILA</div>
+    <div class="footer-meta" style="margin-top:4px;">Sistema de Inteligência Comercial</div>
+  </div>
+  <div style="text-align:right;">
+    <div class="footer-meta">Brandbook Oficial v1.0</div>
+    <div class="footer-meta" style="margin-top:4px;">RDP Studio • Marcelo Rodrigues • 2026</div>
+  </div>
+</footer>
+
+</body>
+</html>
