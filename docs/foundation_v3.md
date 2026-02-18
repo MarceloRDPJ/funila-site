@@ -372,6 +372,7 @@ async def track_and_redirect(slug: str, request: Request):
 *   **Mono:** DM Mono.
 
 **Regras:**
+*   **Logo e Favicon Imutáveis:** O logo e o favicon são ativos definitivos da marca e não devem ser alterados, distorcidos ou substituídos.
 *   Azul é a única cor dominante.
 *   Status são funcionais (nunca decorativos).
 *   Dark mode é o padrão.
