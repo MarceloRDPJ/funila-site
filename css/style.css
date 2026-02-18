@@ -27,16 +27,24 @@ body {
   background: var(--bg);
   color: var(--text);
   font-family: 'DM Sans', sans-serif;
-  font-size: 16px;
-  line-height: 1.6;
+  font-size: 18px;
+  line-height: 1.7;
   overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 /* ── TYPOGRAPHY ── */
 h1, h2, h3, h4, h5, h6 {
   font-family: 'Syne', sans-serif;
   color: var(--text);
+  line-height: 1.2;
 }
+
+/* Ensure Syne isn't too heavy/unreadable on smaller screens */
+h1 { font-weight: 800; letter-spacing: -0.03em; }
+h2 { font-weight: 700; letter-spacing: -0.02em; }
+h3 { font-weight: 600; letter-spacing: -0.01em; }
 
 .text-mono {
   font-family: 'DM Mono', monospace;
