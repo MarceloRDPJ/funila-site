@@ -3,573 +3,541 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FUNILA — Sistema de Inteligência Comercial</title>
+<title>FUNILA — Inteligência Comercial</title>
 <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png">
-<link rel="icon" type="image/png" sizes="32x32" href="assets/android-chrome-512x512.png">
-<link rel="icon" type="image/png" sizes="16x16" href="assets/android-chrome-512x512.png">
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16x16.png">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-  /* ── INTRO ANIMATION STYLES (Adapted) ── */
-  .intro-section {
-    position: relative;
-    height: 100vh;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: #0F1115;
-    overflow: hidden;
+  /* ─── 1. CORE & RESET ─── */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    /* Cores Dark Premium */
+    --bg-void:       #050505;
+    --bg-main:       #0B0D11;
+    --bg-card:       #13161C;
+    --bg-card-hover: #1A1E26;
+
+    --border:        #222630;
+    --border-light:  #333A4A;
+
+    --blue:          #2563EB;
+    --blue-neon:     #60A5FA;
+    --success:       #10B981;
+    --danger:        #EF4444;
+
+    --text-main:     #F1F5F9;
+    --text-muted:    #94A3B8;
+
+    --font-display:  'Syne', sans-serif;
+    --font-body:     'DM Sans', sans-serif;
+    --font-mono:     'DM Mono', monospace;
   }
 
-  .scene {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 40px;
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg-main);
+    color: var(--text-main);
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* Utilitários SVG */
+  .icon { width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+  .icon-lg { width: 48px; height: 48px; stroke-width: 1.5; }
+
+  /* ─── 2. A INTRODUÇÃO (SUA VERSÃO CUSTOMIZADA) ─── */
+  .intro-overlay {
+    position: fixed; inset: 0;
+    background: var(--bg-void);
+    z-index: 9999;
+    display: flex; align-items: center; justify-content: center;
+    pointer-events: none;
+    /* Fade out para revelar o site após 4s */
+    animation: fadeOutIntro 0.8s cubic-bezier(0.7, 0, 0.3, 1) forwards 3.8s;
+  }
+  @keyframes fadeOutIntro { to { opacity: 0; visibility: hidden; } }
+
+  /* O RAIO / LASER */
+  .v-line {
+    position: fixed; left: 50%; top: 0; width: 2px; height: 0;
+    background: linear-gradient(180deg, transparent, var(--blue-neon), #FFF, var(--blue-neon), transparent);
+    transform: translateX(-50%);
+    box-shadow: 0 0 25px var(--blue);
     z-index: 10;
+    opacity: 1;
+    animation: laserFall 1.2s cubic-bezier(0.85, 0, 0.15, 1) forwards;
   }
 
-  /* ── LOGO MARK ── */
-  .logo-mark {
+  @keyframes laserFall {
+    0%   { height: 0; top: 0; opacity: 0; }
+    10%  { opacity: 1; }
+    50%  { height: 100vh; top: 0; opacity: 1; }
+    100% { height: 0; top: 100vh; opacity: 0; }
+  }
+
+  .intro-scene {
     position: relative;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    opacity: 0;
-    animation: fadeInMark 0.4s ease forwards;
-    animation-delay: 0.2s;
+    display: flex; flex-direction: column; align-items: center; gap: 40px;
+    transform: scale(1.1);
   }
 
-  .logo-mark img {
-    width: 130px;
-    height: auto;
-    opacity: 0;
-    transform: translateX(-20px);
-    animation: slideInLogo 0.8s cubic-bezier(0.16,1,0.3,1) forwards;
-    animation-delay: 0.5s;
+  /* LOGÓTIPO ANIMADO */
+  .logo-anim {
+    position: relative; opacity: 0;
+    animation: showLogo 0.4s ease forwards 0.8s;
   }
+  @keyframes showLogo { to { opacity: 1; } }
+
+  .bar-row { display: flex; align-items: center; margin-bottom: 8px; overflow: hidden; }
+  .bar-rect { height: 22px; border-radius: 4px; transform: translateX(-150%); opacity: 0; }
+  .bar-arrow { width: 0; height: 0; border-style: solid; margin-left: -1px; transform: translateX(-150%); opacity: 0; }
+
+  /* Curva premium para entrada */
+  .r1 .bar-rect, .r1 .bar-arrow { animation: slideInLogo 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards 1.0s; }
+  .r1 .bar-rect { width: 130px; background: #2563EB; }
+  .r1 .bar-arrow { border-width: 11px 0 11px 18px; border-color: transparent transparent transparent #2563EB; }
+
+  .r2 .bar-rect, .r2 .bar-arrow { animation: slideInLogo 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards 1.2s; }
+  .r2 .bar-rect { width: 100px; background: #1E40AF; }
+  .r2 .bar-arrow { border-width: 11px 0 11px 18px; border-color: transparent transparent transparent #1E40AF; }
+
+  .r3 .bar-rect, .r3 .bar-arrow { animation: slideInLogo 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards 1.4s; }
+  .r3 .bar-rect { width: 70px; background: #1D4ED8; }
+  .r3 .bar-arrow { border-width: 11px 0 11px 18px; border-color: transparent transparent transparent #1D4ED8; }
 
   @keyframes slideInLogo {
-    0%   { opacity: 0; transform: translateX(-20px); }
-    100% { opacity: 1; transform: translateX(0); }
+    to { transform: translateX(0); opacity: 1; }
   }
 
-  /* Scan line */
-  .scan-line {
-    position: absolute;
-    left: -10px; right: -10px;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(37,99,235,0.8), transparent);
-    top: 50%;
+  /* Texto Revelado */
+  .wm-box { text-align: center; overflow: hidden; opacity: 0; animation: textReveal 1s ease forwards 2.0s; }
+  .wm-title { font-family: var(--font-display); font-weight: 800; font-size: 52px; color: #FFF; line-height: 1; }
+  .wm-sub { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--text-muted); margin-top: 10px; }
+
+  @keyframes textReveal {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ─── 3. SITE PRINCIPAL (REVELAÇÃO) ─── */
+  .main-app {
     opacity: 0;
-    animation: scan 0.5s ease forwards;
-    animation-delay: 1.4s;
+    /* Começa a aparecer quando a intro termina */
+    animation: fadeInApp 1.5s ease forwards 3.5s;
   }
+  @keyframes fadeInApp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
 
-  @keyframes scan {
-    0%   { top: -10%; opacity: 0; }
-    20%  { opacity: 1; }
-    100% { top: 110%; opacity: 0; }
+  /* Navbar */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; height: 80px;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 24px;
+    background: rgba(11, 13, 17, 0.85); backdrop-filter: blur(16px);
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    z-index: 100;
   }
+  .container { width: 100%; max-width: 1100px; margin: 0 auto; }
+  .nav-inner { display: flex; justify-content: space-between; align-items: center; width: 100%; max-width: 1100px; margin: 0 auto; }
 
-  /* Glow sutil */
-  .glow {
-    position: absolute;
-    width: 220px; height: 120px;
-    background: radial-gradient(ellipse, rgba(37,99,235,0.12) 0%, transparent 70%);
-    top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-    opacity: 0;
-    animation: glowIn 1.2s ease forwards;
-    animation-delay: 1.5s;
-    pointer-events: none;
-  }
+  .nav-logo { font-family: var(--font-display); font-weight: 800; font-size: 22px; color: #FFF; display: flex; align-items: center; gap: 8px; }
 
-  @keyframes glowIn {
-    0%   { opacity: 0; }
-    100% { opacity: 1; }
-  }
+  .nav-links { display: flex; gap: 32px; }
+  .n-link { text-decoration: none; color: var(--text-muted); font-size: 14px; font-weight: 500; transition: 0.2s; }
+  .n-link:hover { color: #FFF; }
 
-  @keyframes fadeInMark {
-    to { opacity: 1; }
-  }
-
-  /* ── WORDMARK ── */
-  .wordmark {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 6px;
-    opacity: 0;
-    transform: translateY(10px);
-    animation: wordmarkIn 0.8s cubic-bezier(0.16,1,0.3,1) forwards;
-    animation-delay: 1.9s;
-  }
-
-  .wordmark-title {
-    font-family: 'Syne', sans-serif;
-    font-weight: 800;
-    font-size: 52px;
-    letter-spacing: 0.12em;
-    color: #EDF2FF;
-    line-height: 1;
-  }
-
-  .wordmark-sub {
-    font-family: 'DM Sans', sans-serif;
-    font-weight: 300;
-    font-size: 11px;
-    letter-spacing: 0.35em;
-    text-transform: uppercase;
-    color: #4F5E75;
-  }
-
-  @keyframes wordmarkIn {
-    0%   { opacity: 0; transform: translateY(10px); }
-    100% { opacity: 1; transform: translateY(0); }
-  }
-
-  /* ── LINHA DIVISÓRIA ── */
-  .divider-line {
-    width: 0;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, #2A3242, transparent);
-    animation: dividerIn 0.8s ease forwards;
-    animation-delay: 2.1s;
-  }
-
-  @keyframes dividerIn {
-    to { width: 240px; }
-  }
-
-  /* ── REPLAY BUTTON (Moved to top right absolute) ── */
-  .replay {
-    position: absolute;
-    bottom: 32px;
-    right: 32px;
-    background: rgba(37,99,235,0.1);
-    border: 1px solid rgba(37,99,235,0.3);
-    color: #2563EB;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 12px;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    padding: 10px 20px;
-    border-radius: 6px;
-    cursor: pointer;
-    opacity: 0;
-    animation: fadeBtn 0.5s ease forwards;
-    animation-delay: 3s;
+  /* BOTÃO ÁREA DE MEMBROS EXPLÍCITO */
+  .btn-member {
+    display: flex; align-items: center; gap: 10px;
+    background: rgba(37,99,235,0.1); border: 1px solid rgba(37,99,235,0.3);
+    padding: 10px 20px; border-radius: 8px;
+    color: var(--blue-neon); text-decoration: none; font-size: 13px; font-weight: 600;
     transition: all 0.2s;
-    z-index: 20;
   }
-  .replay:hover {
-    background: rgba(37,99,235,0.2);
-    border-color: rgba(37,99,235,0.6);
+  .btn-member:hover { background: rgba(37,99,235,0.2); box-shadow: 0 0 15px rgba(37,99,235,0.2); color: #FFF; border-color: var(--blue-neon); }
+  .lock-icon { width: 14px; height: 14px; fill: currentColor; }
+
+  /* Hero */
+  .hero { padding: 180px 24px 120px; text-align: center; position: relative; overflow: hidden; }
+
+  .bg-glow {
+    position: absolute; width: 600px; height: 600px; background: radial-gradient(circle, rgba(37,99,235,0.15), transparent 70%);
+    top: 50%; left: 50%; transform: translate(-50%, -50%); pointer-events: none; z-index: -1;
   }
 
-  @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(0.8)} }
-  @keyframes fadeBtn {
-    to { opacity: 1; }
+  .pill {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.2);
+    padding: 6px 16px; border-radius: 100px; margin-bottom: 32px;
+    font-family: var(--font-mono); font-size: 11px; color: #6EE7B7; letter-spacing: 0.05em;
+    animation: float 3s ease-in-out infinite;
   }
+  .pill-dot { width: 6px; height: 6px; background: var(--success); border-radius: 50%; box-shadow: 0 0 8px var(--success); }
+  @keyframes float { 0%,100%{transform:translateY(0);} 50%{transform:translateY(-5px);} }
 
-  /* ── CORNER TAG ── */
-  .corner-tag {
-    position: absolute;
-    bottom: 32px;
-    left: 32px;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 11px;
-    color: #2A3242;
-    letter-spacing: 0.1em;
-    opacity: 0;
-    animation: fadeBtn 0.5s ease forwards;
-    animation-delay: 3s;
-    z-index: 20;
+  h1 {
+    font-family: var(--font-display); font-size: clamp(40px, 6vw, 72px);
+    font-weight: 700; line-height: 1.1; margin-bottom: 24px;
+    color: #FFF;
   }
-
-  /* ── VINHETA ── */
-  .vignette {
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.6) 100%);
-    pointer-events: none;
-    z-index: 5;
+  .txt-highlight {
+    background: linear-gradient(90deg, #FFF, #94A3B8);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
   }
+  .txt-loss { color: var(--danger); text-shadow: 0 0 30px rgba(239,68,68,0.2); }
 
-  /* ── LINHA VERTICAL INICIAL ── */
-  .v-line {
-    position: absolute;
-    left: 50%;
-    top: 0;
-    width: 1px;
-    height: 0;
-    background: linear-gradient(180deg, transparent, #2563EB, transparent);
-    animation: vlineDown 0.6s ease forwards;
-    animation-delay: 0s;
-    transform: translateX(-50%);
+  .hero-p { font-size: 18px; color: var(--text-muted); max-width: 640px; margin: 0 auto 48px; font-weight: 300; }
+
+  /* BOTÕES HERO */
+  .cta-box { display: flex; align-items: center; justify-content: center; gap: 16px; flex-wrap: wrap; }
+
+  .btn-primary {
+    background: var(--blue); color: #FFF; border: none;
+    padding: 16px 32px; border-radius: 8px; font-weight: 600; font-size: 16px; text-decoration: none;
+    transition: 0.2s; box-shadow: 0 4px 0 #1D4ED8; /* Efeito tátil */
   }
+  .btn-primary:active { transform: translateY(4px); box-shadow: none; }
+  .btn-primary:hover { filter: brightness(1.1); box-shadow: 0 4px 0 #1D4ED8, 0 10px 30px rgba(37, 99, 235, 0.3); }
 
-  @keyframes vlineDown {
-    0%  { height: 0; top: 0; opacity: 1; }
-    70% { height: 100vh; top: 0; opacity: 1; }
-    100%{ height: 100vh; top: 0; opacity: 0; }
+  /* BOTÃO DEMO ANIMADO */
+  .btn-demo {
+    display: flex; align-items: center; gap: 12px;
+    padding: 15px 32px; border-radius: 8px;
+    border: 1px solid var(--border-light); background: rgba(255,255,255,0.03);
+    color: var(--text-main); text-decoration: none; font-weight: 500;
+    transition: 0.2s; cursor: pointer;
   }
+  .btn-demo:hover { background: rgba(255,255,255,0.06); border-color: var(--text-muted); }
 
-  /* ── SALES PAGE STYLES ── */
-  .hero-text-section {
-    text-align: center;
-    padding: 60px 24px;
-    max-width: 900px;
-    margin: 0 auto;
+  /* A Animação do "Sistema" dentro do botão */
+  .demo-anim {
+    width: 20px; height: 14px;
+    display: flex; flex-direction: column; justify-content: space-between;
   }
+  .da-line { height: 2px; background: var(--text-muted); border-radius: 2px; width: 100%; opacity: 0.5; }
 
-  .hero-title {
-    font-size: clamp(32px, 5vw, 64px);
-    font-weight: 800;
-    line-height: 1.1;
-    margin-bottom: 24px;
-    background: linear-gradient(180deg, #fff, #8896AC);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+  /* Animação de "dados carregando" */
+  .btn-demo:hover .da-line { background: #FFF; opacity: 1; animation: loadLine 1s infinite; }
+  .btn-demo:hover .l1 { width: 60%; animation-delay: 0s; }
+  .btn-demo:hover .l2 { width: 90%; animation-delay: 0.2s; }
+  .btn-demo:hover .l3 { width: 40%; animation-delay: 0.4s; }
+
+  @keyframes loadLine { 0% { width: 20%; opacity: 0.5; } 50% { width: 100%; opacity: 1; } 100% { width: 20%; opacity: 0.5; } }
+
+  /* Seções */
+  .section { padding: 100px 24px; border-top: 1px solid var(--border); background: var(--bg-main); }
+  .sec-head { margin-bottom: 60px; }
+  .sec-label { font-family: var(--font-mono); font-size: 11px; color: var(--blue-neon); letter-spacing: 0.1em; text-transform: uppercase; display: block; margin-bottom: 16px; }
+  h2 { font-family: var(--font-display); font-size: 36px; margin-bottom: 16px; color: #FFF; }
+  .sec-p { color: var(--text-muted); font-size: 18px; max-width: 600px; }
+
+  /* Cards Profissionais */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
+  .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+
+  .card {
+    background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px;
+    padding: 32px; transition: 0.3s; position: relative; overflow: hidden;
   }
-
-  .hero-desc {
-    font-size: 18px;
-    color: var(--text2);
-    margin-bottom: 40px;
-    font-weight: 300;
+  /* Brilho no hover */
+  .card:hover { border-color: var(--border-light); transform: translateY(-5px); }
+  .card::after {
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(circle at top right, rgba(255,255,255,0.03), transparent 60%);
+    opacity: 0; transition: 0.3s;
   }
+  .card:hover::after { opacity: 1; }
 
-  .feature-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 24px;
-    margin-top: 48px;
+  .c-icon { margin-bottom: 24px; color: var(--blue-neon); }
+  .c-title { font-weight: 700; font-size: 18px; margin-bottom: 12px; color: #FFF; }
+  .c-text { font-size: 15px; color: var(--text-muted); line-height: 1.6; }
+
+  /* Footer */
+  footer { border-top: 1px solid var(--border); padding: 80px 24px 40px; background: var(--bg-main); }
+  .foot-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 40px; max-width: 1100px; margin: 0 auto; }
+  .f-head { font-size: 12px; font-weight: 700; color: #FFF; margin-bottom: 20px; letter-spacing: 0.05em; }
+  .f-link { display: block; color: var(--text-muted); text-decoration: none; margin-bottom: 12px; font-size: 14px; transition: 0.2s; }
+  .f-link:hover { color: var(--blue-neon); }
+
+  /* Modal de Demonstração */
+  .modal-overlay {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(5px);
+    z-index: 9999; display: none; align-items: center; justify-content: center;
+    opacity: 0; transition: opacity 0.3s;
   }
+  .modal-overlay.active { opacity: 1; }
 
-  .step-list {
-    display: flex;
-    flex-direction: column;
-    gap: 32px;
-    margin-top: 48px;
+  .modal-box {
+    background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px;
+    width: 90%; max-width: 500px; padding: 32px;
+    transform: translateY(20px); transition: transform 0.3s;
+    position: relative;
   }
+  .modal-overlay.active .modal-box { transform: translateY(0); }
 
-  .step-item {
-    display: flex;
-    gap: 24px;
-    background: var(--bg3);
-    border: 1px solid var(--border);
-    padding: 32px;
-    border-radius: 16px;
-    align-items: flex-start;
-  }
+  .close-btn { position: absolute; top: 16px; right: 16px; color: var(--text-muted); cursor: pointer; }
 
-  .step-num {
-    background: rgba(37,99,235,0.1);
-    color: var(--blue);
-    width: 40px; height: 40px;
-    display: flex; align-items: center; justify-content: center;
-    border-radius: 50%;
-    font-family: 'DM Mono', monospace;
-    font-weight: 700;
-    flex-shrink: 0;
-  }
+  /* Simulação de Sistema no Modal */
+  .sys-header { border-bottom: 1px solid var(--border); padding-bottom: 16px; margin-bottom: 16px; display: flex; align-items: center; justify-content: space-between; }
+  .sys-title { font-weight: 700; color: #FFF; }
+  .sys-badge { background: rgba(37,99,235,0.1); color: var(--blue-neon); padding: 4px 8px; border-radius: 4px; font-size: 10px; font-weight: 700; }
 
-  .highlight { color: var(--blue); }
+  .sys-row { display: flex; align-items: center; gap: 12px; padding: 12px; border-radius: 8px; background: rgba(255,255,255,0.03); margin-bottom: 8px; animation: slideInRow 0.5s ease backwards; }
+  .sys-avatar { width: 32px; height: 32px; border-radius: 50%; background: var(--border); display: flex; align-items: center; justify-content: center; font-size: 10px; color: #FFF; }
+  .sys-info { flex: 1; }
+  .sys-name { font-size: 13px; font-weight: 600; color: #FFF; }
+  .sys-meta { font-size: 11px; color: var(--text-muted); }
+  .sys-score { font-family: var(--font-mono); font-size: 12px; font-weight: 700; }
 
-  .waitlist-section {
-    background: linear-gradient(180deg, var(--bg3), var(--bg));
-    border-top: 1px solid var(--border);
-    border-bottom: 1px solid var(--border);
-    text-align: center;
-  }
-
-  .coming-soon-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    background: rgba(37,99,235,0.1);
-    color: var(--blue);
-    padding: 8px 16px;
-    border-radius: 100px;
-    font-size: 12px;
-    font-weight: 600;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    margin-bottom: 24px;
-    border: 1px solid rgba(37,99,235,0.2);
-  }
-
-  /* ── FOOTER ── */
-  .site-footer {
-    border-top: 1px solid var(--border);
-    background: var(--bg);
-    width: 100%;
-    display: flex;
-    justify-content: center;
-  }
-
-  .site-footer-inner {
-    width: 100%;
-    max-width: 1100px;
-    padding: 40px 48px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-
-  .footer-brand {
-    font-family: 'Syne', sans-serif;
-    font-weight: 800;
-    font-size: 16px;
-    letter-spacing: 0.05em;
-    color: var(--text);
-  }
-
-  .footer-meta {
-    font-size: 13px;
-    color: var(--text3);
-  }
+  @keyframes slideInRow { from { opacity: 0; transform: translateX(-10px); } to { opacity: 1; transform: translateX(0); } }
 
   @media (max-width: 768px) {
-    .site-footer-inner {
-      flex-direction: column;
-      gap: 24px;
-      text-align: center;
-      padding: 40px 24px;
-    }
-    .site-footer-inner > div {
-      text-align: center !important;
-    }
+    .grid-2, .grid-3 { grid-template-columns: 1fr; }
+    h1 { font-size: 36px; line-height: 1.2; }
+    .nav-links { display: none; } /* Simplifica menu no mobile */
+    .intro-scene { transform: scale(0.9); }
+
+    /* Otimizações Mobile */
+    nav { padding: 0 16px; height: 70px; }
+    .section { padding: 60px 20px; }
+    .hero { padding: 140px 20px 80px; }
+
+    .wm-title { font-size: 38px; }
+
+    .cta-box { flex-direction: column; width: 100%; gap: 12px; }
+    .btn-primary, .btn-demo { width: 100%; justify-content: center; }
+
+    .btn-member { padding: 8px 12px; font-size: 12px; }
+    .nav-logo { font-size: 20px; }
   }
 
-  /* Responsive fixes for Intro */
-  @media (max-width: 600px) {
-    .wordmark-title { font-size: 36px; }
-    .bar-1 { width: 100px; } .bar-2 { width: 80px; } .bar-3 { width: 60px; }
-  }
 </style>
 </head>
 <body>
 
-<!-- NAVIGATION -->
-<nav style="
-  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-  height: 64px;
-  background: rgba(15, 17, 21, 0.85);
-  backdrop-filter: blur(12px);
-  border-bottom: 1px solid var(--border);
-  display: flex; justify-content: center;
-">
-  <div style="width: 100%; max-width: 1100px; padding: 0 48px; display: flex; align-items: center; justify-content: space-between;">
-    <a href="#" style="display: flex; align-items: center;">
-      <img src="assets/logo.png" alt="FUNILA" style="height: 32px;">
-    </a>
-    <a href="public/brandbook.html" class="btn-outline" style="
-      text-decoration: none; padding: 6px 16px; font-size: 13px; border-radius: 6px;
-      font-family: 'DM Sans', sans-serif; font-weight: 500;
-      transition: all 0.2s;
-    ">Conheça a Marca</a>
-  </div>
-</nav>
-
-<!-- INTRO SECTION -->
-<section class="intro-section">
-  <!-- Vinheta cinematográfica -->
-  <div class="vignette"></div>
-
-  <!-- Linha vertical inicial -->
-  <div class="v-line"></div>
-
-  <!-- Cena principal -->
-  <div class="scene">
-
-    <!-- Logo Mark com scan -->
-    <div class="logo-mark">
-      <div class="glow"></div>
-      <div class="scan-line"></div>
-      <img src="assets/logo-mark.png" alt="Logo Mark">
-    </div>
-
-    <!-- Divisor -->
-    <div class="divider-line"></div>
-
-    <!-- Wordmark -->
-    <div class="wordmark">
-      <div class="wordmark-title">FUNILA</div>
-      <div class="wordmark-sub">Sistema de Inteligência Comercial</div>
-    </div>
-
-  </div>
-
-  <!-- Em Breve -->
-  <div style="
-    position:absolute; top:36px; left:50%; transform:translateX(-50%);
-    display:flex; align-items:center; gap:8px;
-    background:rgba(15,17,21,0.8); border:1px solid #2A3242;
-    border-radius:100px; padding:7px 20px;
-    opacity:0; animation:fadeBtn 0.6s ease forwards; animation-delay:2.8s;
-    z-index: 20;
-  ">
-    <div style="width:6px;height:6px;border-radius:50%;background:#2563EB;animation:pulse 2s ease-in-out infinite;"></div>
-    <span style="font-family:'DM Sans',sans-serif;font-size:11px;font-weight:500;letter-spacing:0.25em;text-transform:uppercase;color:#4F5E75;">Em Breve</span>
-  </div>
-
-  <!-- UI -->
-  <div class="corner-tag">funila.com.br • 2026</div>
-  <button class="replay" onclick="replay()">↺ Replay</button>
-
-  <!-- Scroll Indicator -->
-  <div style="position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%); color: var(--text3); font-size: 24px; animation: bounce 2s infinite; opacity: 0; animation-delay: 3.5s; animation-fill-mode: forwards;">
-    ↓
-  </div>
-  <style>@keyframes bounce { 0%, 20%, 50%, 80%, 100% {transform: translateX(-50%) translateY(0);} 40% {transform: translateX(-50%) translateY(-10px);} 60% {transform: translateX(-50%) translateY(-5px);} }</style>
-</section>
-
-<!-- MAIN CONTENT -->
-<main>
-
-  <!-- HERO TEXT -->
-  <section class="section hero-text-section" style="padding-top: 140px;">
-    <h1 class="hero-title">Afunila o clique.<br>Entrega o cliente.</h1>
-    <p class="hero-desc">Transforme cliques em leads qualificados no WhatsApp. Chega de receber "Oi" de quem não tem perfil de compra.</p>
-    <a href="https://wa.me/5562996780498?text=Ol%C3%A1!%20Tenho%20interesse%20na%20lista%20de%20espera%20do%20Funila." class="btn btn-primary" target="_blank">Entrar na Lista de Espera</a>
-  </section>
-
-  <div class="divider"></div>
-
-  <!-- PROBLEM SECTION -->
-  <section class="section" id="problema">
-    <div class="section-label">01 — O Problema</div>
-    <h2 class="section-title">O Buraco Negro do WhatsApp</h2>
-
-    <div class="feature-grid">
-      <div class="card">
-        <h3 style="margin-bottom: 16px;">O Ciclo do Desperdício</h3>
-        <p style="color: var(--text2); font-size: 14px;">Você investe em anúncios. O lead clica e vai para o WhatsApp. O vendedor recebe apenas "Nome + Telefone" e perde horas qualificando curiosos. O ROI fica invisível.</p>
+  <!-- INTRODUÇÃO (A CENA CINEMATOGRÁFICA) -->
+  <div class="intro-overlay">
+    <div class="v-line"></div>
+    <div class="intro-scene">
+      <div class="logo-anim">
+        <div class="bar-row r1"><div class="bar-rect"></div><div class="bar-arrow"></div></div>
+        <div class="bar-row r2"><div class="bar-rect"></div><div class="bar-arrow"></div></div>
+        <div class="bar-row r3"><div class="bar-rect"></div><div class="bar-arrow"></div></div>
       </div>
-      <div class="card">
-        <h3 style="margin-bottom: 16px;">Sem Rastreamento</h3>
-        <p style="color: var(--text2); font-size: 14px;">Qual campanha gerou a venda? Ninguém sabe. O WhatsApp é um buraco negro de dados onde a inteligência da campanha morre.</p>
-      </div>
-      <div class="card">
-        <h3 style="margin-bottom: 16px;">Investigação Manual</h3>
-        <p style="color: var(--text2); font-size: 14px;">Seu vendedor atua como um detetive, perguntando a mesma coisa para todo mundo. Lead frio é tratado igual ao quente.</p>
+      <div class="wm-box">
+        <div class="wm-title">FUNILA</div>
+        <div class="wm-sub">Sistema de Inteligência Comercial</div>
       </div>
     </div>
-  </section>
+  </div>
 
-  <!-- SOLUTION SECTION -->
-  <section class="section" style="background: var(--bg);">
-    <div class="section-label">02 — A Solução</div>
-    <h2 class="section-title">As 4 Camadas de Inteligência</h2>
-    <p style="color: var(--text2); max-width: 600px; margin-bottom: 48px;">O Funila não é apenas um formulário. É um sistema completo que fica entre o seu anúncio e o seu WhatsApp.</p>
+  <!-- SITE PRINCIPAL -->
+  <div class="main-app">
 
-    <div class="step-list">
-      <div class="step-item">
-        <div class="step-num">1</div>
-        <div>
-          <h4 style="margin-bottom: 8px;">Link Tracker</h4>
-          <p style="color: var(--text2); font-size: 14px;">Rastreamento silencioso. Saiba exatamente qual campanha, dispositivo e cidade gerou o clique.</p>
+    <!-- Navbar -->
+    <nav>
+      <div class="nav-inner">
+        <div class="nav-logo">FUNILA<span style="color:var(--blue)">.</span></div>
+
+        <div class="nav-links">
+          <a href="#problema" class="n-link">O Gargalo</a>
+          <a href="#solucao" class="n-link">Solução</a>
+          <a href="#planos" class="n-link">Planos</a>
+        </div>
+
+        <!-- BOTÃO ÁREA DE MEMBROS EXPLÍCITO -->
+        <a href="https://app.funila.com.br/" class="btn-member">
+          <svg class="lock-icon" viewBox="0 0 24 24"><path d="M12 2C9.243 2 7 4.243 7 7V10H6C4.897 10 4 10.897 4 12V20C4 21.103 4.897 22 6 22H18C19.103 22 20 21.103 20 20V12C20 10.897 19.103 10 18 10H17V7C17 4.243 14.757 2 12 2ZM12 4C13.654 4 15 5.346 15 7V10H9V7C9 5.346 10.346 4 12 4Z"/></svg>
+          Área do Cliente
+        </a>
+      </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+      <div class="bg-glow"></div>
+
+      <div class="pill">
+        <div class="pill-dot"></div>
+        <span>SISTEMA ONLINE • V3.0</span>
+      </div>
+
+      <h1>
+        Pare de <span class="txt-loss">Queimar Dinheiro</span><br>
+        com Leads Curiosos.
+      </h1>
+
+      <p class="hero-p">
+        O sistema que revela a verdade por trás do clique. Rastreio total, Score Serasa e entrega do cliente pronto no WhatsApp. Seus concorrentes já estão usando.
+      </p>
+
+      <div class="cta-box">
+        <a href="#" class="btn-primary">Quero Parar de Perder Vendas</a>
+
+        <!-- BOTÃO DEMO COM JS -->
+        <button id="demoBtn" class="btn-demo">
+          <div class="demo-anim">
+            <div class="da-line l1"></div>
+            <div class="da-line l2"></div>
+            <div class="da-line l3"></div>
+          </div>
+          Ver Demonstração
+        </button>
+      </div>
+
+      <div style="margin-top:40px; font-size:11px; color:var(--text-muted); letter-spacing:0.05em; font-family:var(--font-mono);">
+        🔒 DADOS CRIPTOGRAFADOS • INSTALAÇÃO EM 3 MINUTOS
+      </div>
+    </section>
+
+    <!-- Problema -->
+    <section id="problema" class="section">
+      <div class="container">
+        <div class="sec-head">
+          <span class="sec-label">O GARGALO INVISÍVEL</span>
+          <h2>O "Buraco Negro" do seu Lucro</h2>
+          <p class="sec-p">Você coloca dinheiro em tráfego, mas perde os dados (e o cliente) assim que ele clica no anúncio.</p>
+        </div>
+
+        <div class="grid-2">
+          <div class="card">
+            <div class="c-icon"><svg class="icon-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
+            <div class="c-title">Cegueira de Origem</div>
+            <div class="c-text">Seu lead chama no WhatsApp e você não sabe de qual anúncio ele veio. Você acaba desligando a campanha errada e drenando seu orçamento.</div>
+          </div>
+          <div class="card">
+            <div class="c-icon" style="color:var(--danger)"><svg class="icon-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg></div>
+            <div class="c-title">Tempo Jogado Fora</div>
+            <div class="c-text">Vendedores perdem 70% do dia perguntando "qual sua renda?" para curiosos. O Funila elimina isso entregando a ficha pronta.</div>
+          </div>
         </div>
       </div>
-      <div class="step-item">
-        <div class="step-num">2</div>
-        <div>
-          <h4 style="margin-bottom: 8px;">Squeeze Page Progressiva</h4>
-          <p style="color: var(--text2); font-size: 14px;">Uma landing page focada em conversão que qualifica o lead em 3 etapas simples (Perfil Profissional e Financeiro).</p>
+    </section>
+
+    <!-- Solução -->
+    <section id="solucao" class="section" style="background:var(--bg-main)">
+      <div class="container">
+        <div class="sec-head">
+          <span class="sec-label">TECNOLOGIA PROPRIETÁRIA</span>
+          <h2>4 Camadas de Inteligência</h2>
+          <p class="sec-p">Infraestrutura invisível entre o clique e o "Olá".</p>
+        </div>
+
+        <div class="grid-3">
+          <div class="card">
+            <div class="c-icon"><svg class="icon-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></div>
+            <div class="c-title">1. Link Tracker</div>
+            <div class="c-text">Substitua o link do anúncio. Rastreamos dispositivo, localização e campanha automaticamente.</div>
+          </div>
+          <div class="card">
+            <div class="c-icon"><svg class="icon-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
+            <div class="c-title">2. Squeeze Page</div>
+            <div class="c-text">Landing page focada em conversão. Quem não tem interesse real, desiste aqui. Filtro natural.</div>
+          </div>
+          <div class="card">
+            <div class="c-icon"><svg class="icon-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 2a10 10 0 1 0 10 10 4 4 0 0 1-5-5 4 4 0 0 1-5-5"/><path d="M8.5 8.5v.01"/><path d="M16 16v.01"/><path d="M12 12v.01"/></svg></div>
+            <div class="c-title">3. Enriquecimento</div>
+            <div class="c-text">Score interno + Consulta Serasa (API) em tempo real para saber o potencial de compra.</div>
+          </div>
         </div>
       </div>
-      <div class="step-item">
-        <div class="step-num">3</div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+      <div class="foot-grid">
         <div>
-          <h4 style="margin-bottom: 8px;">Score Automático + Serasa</h4>
-          <p style="color: var(--text2); font-size: 14px;">O sistema calcula um Score Interno e consulta a API do Serasa (Plano Pro) para entregar a saúde financeira do lead.</p>
+          <div style="font-family:'Syne'; font-weight:800; font-size:20px; color:#FFF; margin-bottom:12px;">FUNILA.</div>
+          <p style="color:var(--text-muted); font-size:13px; max-width:260px;">A ferramenta que se paga na primeira venda recuperada.</p>
+        </div>
+        <div>
+          <div class="f-head">PRODUTO</div>
+          <a href="#" class="f-link">Link Tracker</a>
+          <a href="#" class="f-link">Qualificação</a>
+          <a href="#" class="f-link">Planos</a>
+        </div>
+        <div>
+          <div class="f-head">LEGAL</div>
+          <a href="#" class="f-link">Privacidade</a>
+          <a href="#" class="f-link">Termos de Uso</a>
+          <a href="#" class="f-link">LGPD</a>
         </div>
       </div>
-      <div class="step-item" style="border-color: var(--blue);">
-        <div class="step-num" style="background: var(--blue); color: white;">4</div>
-        <div>
-          <h4 style="margin-bottom: 8px; color: var(--blue);">Entrega Pronta no WhatsApp</h4>
-          <p style="color: var(--text2); font-size: 14px;">O vendedor recebe uma mensagem pronta: "Olá, sou João, CLT há 4 anos, Renda R$4k...". Contexto total para fechar a venda.</p>
-        </div>
+      <div style="border-top:1px solid var(--border); margin-top:40px; padding-top:20px; text-align:center; font-size:12px; color:var(--text-muted);">
+        © 2026 RDP Studio. Goiânia • Brasil.
       </div>
-    </div>
-  </section>
+    </footer>
 
-  <!-- MARKETS -->
-  <section class="section">
-    <div class="section-label">03 — Para Quem</div>
-    <h2 class="section-title">Feito para Converter</h2>
-    <div class="feature-grid">
-      <div class="card">
-        <h4 style="margin-bottom: 12px;">🏠 Corretores de Imóveis</h4>
-        <p style="font-size: 13px; color: var(--text2);">Pare de atender lead sem renda comprovada. Receba o perfil financeiro antes do "Oi".</p>
+  </div>
+
+  <!-- MODAL DE DEMONSTRAÇÃO -->
+  <div id="demoModal" class="modal-overlay">
+    <div class="modal-box">
+      <div class="close-btn" onclick="closeDemo()">✕</div>
+
+      <div class="sys-header">
+        <div class="sys-title">Leads em Tempo Real</div>
+        <div class="sys-badge">AO VIVO</div>
       </div>
-      <div class="card">
-        <h4 style="margin-bottom: 12px;">📈 Agências de Tráfego</h4>
-        <p style="font-size: 13px; color: var(--text2);">Prove o ROI para seu cliente. Mostre quais campanhas geram leads qualificados, não apenas cliques.</p>
+
+      <div id="leadsContainer">
+        <!-- Leads inseridos via JS -->
       </div>
-      <div class="card">
-        <h4 style="margin-bottom: 12px;">🙏 Igrejas e Pastorais</h4>
-        <p style="font-size: 13px; color: var(--text2);">Centralize o cadastro de membros e visitantes. Saiba quem parou de frequentar.</p>
+
+      <div style="margin-top:20px; text-align:center; font-size:12px; color:var(--text-muted);">
+        Simulação do Painel Funila Pro
       </div>
-    </div>
-  </section>
-
-  <!-- WAITLIST / COMING SOON -->
-  <section class="section waitlist-section">
-    <div class="coming-soon-badge">
-      <div style="width: 8px; height: 8px; background: var(--blue); border-radius: 50%;"></div>
-      Em Desenvolvimento
-    </div>
-    <h2 class="section-title">Chega de perder dinheiro com lead frio.</h2>
-    <p style="color: var(--text2); max-width: 600px; margin: 0 auto 40px;">O Funila está em fase final de construção. Garanta sua vaga na lista de espera para receber condições exclusivas.</p>
-
-    <div style="display: flex; flex-direction: column; align-items: center; gap: 24px;">
-      <a href="https://wa.me/5562996780498?text=Ol%C3%A1!%20Gostaria%20de%20entrar%20na%20lista%20de%20espera%20do%20Funila." class="btn btn-primary" target="_blank" style="padding: 16px 40px; font-size: 18px;">
-        Entrar na Lista de Espera
-      </a>
-
-      <a href="public/brandbook.html" style="color: var(--text3); font-size: 14px; text-decoration: none; border-bottom: 1px solid transparent; transition: all 0.2s;">
-        Conheça um pouco mais sobre nós →
-      </a>
-    </div>
-  </section>
-
-</main>
-
-<footer class="site-footer">
-  <div class="site-footer-inner">
-    <div>
-      <div class="footer-brand">FUNILA</div>
-      <div class="footer-meta" style="margin-top:4px;">Sistema de Inteligência Comercial</div>
-    </div>
-    <div>
-      <div class="footer-meta">Um produto <a href="https://rdpstudio.com.br/" target="_blank" style="color: var(--text2); text-decoration: none;">RDP Studio</a></div>
-      <div class="footer-meta" style="margin-top:4px;">Marcelo Rodrigues • 2026</div>
     </div>
   </div>
-</footer>
 
-<script>
-function replay() {
-  const intro = document.querySelector('.intro-section');
-  const els = intro.querySelectorAll('[style*="animation"], .bar, .arrow, .scan-line, .glow, .wordmark, .divider-line, .logo-mark, .v-line, .replay, .corner-tag');
+  <script>
+    // Lógica do Modal de Demo
+    const demoBtn = document.getElementById('demoBtn');
+    const modal = document.getElementById('demoModal');
+    const container = document.getElementById('leadsContainer');
 
-  els.forEach(el => {
-    el.style.animation = 'none';
-    el.offsetHeight; // reflow
-    el.style.animation = '';
-  });
+    const fakeLeads = [
+      { name: "João Silva", meta: "Instagram • Há 2 min", score: 850, color: "#10B981" },
+      { name: "Maria Oliveira", meta: "Google Ads • Há 5 min", score: 620, color: "#F59E0B" },
+      { name: "Carlos Souza", meta: "Direto • Há 12 min", score: 910, color: "#10B981" },
+      { name: "Ana Pereira", meta: "Facebook • Há 15 min", score: 450, color: "#EF4444" }
+    ];
 
-  // Re-bind replay if needed, or just let it be.
-}
-</script>
+    demoBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      modal.style.display = 'flex';
+      setTimeout(() => modal.classList.add('active'), 10);
+
+      // Simula carregamento de leads
+      container.innerHTML = '';
+      fakeLeads.forEach((lead, index) => {
+        setTimeout(() => {
+          container.innerHTML += `
+            <div class="sys-row" style="animation-delay: ${index * 0.1}s">
+              <div class="sys-avatar">${lead.name.charAt(0)}</div>
+              <div class="sys-info">
+                <div class="sys-name">${lead.name}</div>
+                <div class="sys-meta">${lead.meta}</div>
+              </div>
+              <div class="sys-score" style="color:${lead.color}">Score ${lead.score}</div>
+            </div>
+          `;
+        }, index * 600);
+      });
+    });
+
+    function closeDemo() {
+      modal.classList.remove('active');
+      setTimeout(() => modal.style.display = 'none', 300);
+    }
+
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) closeDemo();
+    });
+  </script>
 
 </body>
 </html>

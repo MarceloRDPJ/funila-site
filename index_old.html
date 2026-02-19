@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FUNILA — Sistema de Inteligência Comercial</title>
+<link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/android-chrome-512x512.png">
+<link rel="icon" type="image/png" sizes="16x16" href="assets/android-chrome-512x512.png">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<style>
+  /* ── INTRO ANIMATION STYLES (Adapted) ── */
+  .intro-section {
+    position: relative;
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #0F1115;
+    overflow: hidden;
+  }
+
+  .scene {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 40px;
+    z-index: 10;
+  }
+
+  /* ── LOGO MARK ── */
+  .logo-mark {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    opacity: 0;
+    animation: fadeInMark 0.4s ease forwards;
+    animation-delay: 0.2s;
+  }
+
+  .logo-mark img {
+    width: 130px;
+    height: auto;
+    opacity: 0;
+    transform: translateX(-20px);
+    animation: slideInLogo 0.8s cubic-bezier(0.16,1,0.3,1) forwards;
+    animation-delay: 0.5s;
+  }
+
+  @keyframes slideInLogo {
+    0%   { opacity: 0; transform: translateX(-20px); }
+    100% { opacity: 1; transform: translateX(0); }
+  }
+
+  /* Scan line */
+  .scan-line {
+    position: absolute;
+    left: -10px; right: -10px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(37,99,235,0.8), transparent);
+    top: 50%;
+    opacity: 0;
+    animation: scan 0.5s ease forwards;
+    animation-delay: 1.4s;
+  }
+
+  @keyframes scan {
+    0%   { top: -10%; opacity: 0; }
+    20%  { opacity: 1; }
+    100% { top: 110%; opacity: 0; }
+  }
+
+  /* Glow sutil */
+  .glow {
+    position: absolute;
+    width: 220px; height: 120px;
+    background: radial-gradient(ellipse, rgba(37,99,235,0.12) 0%, transparent 70%);
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    animation: glowIn 1.2s ease forwards;
+    animation-delay: 1.5s;
+    pointer-events: none;
+  }
+
+  @keyframes glowIn {
+    0%   { opacity: 0; }
+    100% { opacity: 1; }
+  }
+
+  @keyframes fadeInMark {
+    to { opacity: 1; }
+  }
+
+  /* ── WORDMARK ── */
+  .wordmark {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    opacity: 0;
+    transform: translateY(10px);
+    animation: wordmarkIn 0.8s cubic-bezier(0.16,1,0.3,1) forwards;
+    animation-delay: 1.9s;
+  }
+
+  .wordmark-title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 52px;
+    letter-spacing: 0.12em;
+    color: #EDF2FF;
+    line-height: 1;
+  }
+
+  .wordmark-sub {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    font-size: 11px;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: #4F5E75;
+  }
+
+  @keyframes wordmarkIn {
+    0%   { opacity: 0; transform: translateY(10px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── LINHA DIVISÓRIA ── */
+  .divider-line {
+    width: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, #2A3242, transparent);
+    animation: dividerIn 0.8s ease forwards;
+    animation-delay: 2.1s;
+  }
+
+  @keyframes dividerIn {
+    to { width: 240px; }
+  }
+
+  /* ── REPLAY BUTTON (Moved to top right absolute) ── */
+  .replay {
+    position: absolute;
+    bottom: 32px;
+    right: 32px;
+    background: rgba(37,99,235,0.1);
+    border: 1px solid rgba(37,99,235,0.3);
+    color: #2563EB;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    opacity: 0;
+    animation: fadeBtn 0.5s ease forwards;
+    animation-delay: 3s;
+    transition: all 0.2s;
+    z-index: 20;
+  }
+  .replay:hover {
+    background: rgba(37,99,235,0.2);
+    border-color: rgba(37,99,235,0.6);
+  }
+
+  @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(0.8)} }
+  @keyframes fadeBtn {
+    to { opacity: 1; }
+  }
+
+  /* ── CORNER TAG ── */
+  .corner-tag {
+    position: absolute;
+    bottom: 32px;
+    left: 32px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    color: #2A3242;
+    letter-spacing: 0.1em;
+    opacity: 0;
+    animation: fadeBtn 0.5s ease forwards;
+    animation-delay: 3s;
+    z-index: 20;
+  }
+
+  /* ── VINHETA ── */
+  .vignette {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.6) 100%);
+    pointer-events: none;
+    z-index: 5;
+  }
+
+  /* ── LINHA VERTICAL INICIAL ── */
+  .v-line {
+    position: absolute;
+    left: 50%;
+    top: 0;
+    width: 1px;
+    height: 0;
+    background: linear-gradient(180deg, transparent, #2563EB, transparent);
+    animation: vlineDown 0.6s ease forwards;
+    animation-delay: 0s;
+    transform: translateX(-50%);
+  }
+
+  @keyframes vlineDown {
+    0%  { height: 0; top: 0; opacity: 1; }
+    70% { height: 100vh; top: 0; opacity: 1; }
+    100%{ height: 100vh; top: 0; opacity: 0; }
+  }
+
+  /* ── SALES PAGE STYLES ── */
+  .hero-text-section {
+    text-align: center;
+    padding: 60px 24px;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .hero-title {
+    font-size: clamp(32px, 5vw, 64px);
+    font-weight: 800;
+    line-height: 1.1;
+    margin-bottom: 24px;
+    background: linear-gradient(180deg, #fff, #8896AC);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .hero-desc {
+    font-size: 18px;
+    color: var(--text2);
+    margin-bottom: 40px;
+    font-weight: 300;
+  }
+
+  .feature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 24px;
+    margin-top: 48px;
+  }
+
+  .step-list {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    margin-top: 48px;
+  }
+
+  .step-item {
+    display: flex;
+    gap: 24px;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    padding: 32px;
+    border-radius: 16px;
+    align-items: flex-start;
+  }
+
+  .step-num {
+    background: rgba(37,99,235,0.1);
+    color: var(--blue);
+    width: 40px; height: 40px;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 50%;
+    font-family: 'DM Mono', monospace;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  .highlight { color: var(--blue); }
+
+  .waitlist-section {
+    background: linear-gradient(180deg, var(--bg3), var(--bg));
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    text-align: center;
+  }
+
+  .coming-soon-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(37,99,235,0.1);
+    color: var(--blue);
+    padding: 8px 16px;
+    border-radius: 100px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 24px;
+    border: 1px solid rgba(37,99,235,0.2);
+  }
+
+  /* ── FOOTER ── */
+  .site-footer {
+    border-top: 1px solid var(--border);
+    background: var(--bg);
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+
+  .site-footer-inner {
+    width: 100%;
+    max-width: 1100px;
+    padding: 40px 48px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .footer-brand {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 16px;
+    letter-spacing: 0.05em;
+    color: var(--text);
+  }
+
+  .footer-meta {
+    font-size: 13px;
+    color: var(--text3);
+  }
+
+  @media (max-width: 768px) {
+    .site-footer-inner {
+      flex-direction: column;
+      gap: 24px;
+      text-align: center;
+      padding: 40px 24px;
+    }
+    .site-footer-inner > div {
+      text-align: center !important;
+    }
+  }
+
+  /* Responsive fixes for Intro */
+  @media (max-width: 600px) {
+    .wordmark-title { font-size: 36px; }
+    .bar-1 { width: 100px; } .bar-2 { width: 80px; } .bar-3 { width: 60px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAVIGATION -->
+<nav style="
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  height: 64px;
+  background: rgba(15, 17, 21, 0.85);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  display: flex; justify-content: center;
+">
+  <div style="width: 100%; max-width: 1100px; padding: 0 48px; display: flex; align-items: center; justify-content: space-between;">
+    <a href="#" style="display: flex; align-items: center;">
+      <img src="assets/logo.png" alt="FUNILA" style="height: 32px;">
+    </a>
+    <a href="public/brandbook.html" class="btn-outline" style="
+      text-decoration: none; padding: 6px 16px; font-size: 13px; border-radius: 6px;
+      font-family: 'DM Sans', sans-serif; font-weight: 500;
+      transition: all 0.2s;
+    ">Conheça a Marca</a>
+  </div>
+</nav>
+
+<!-- INTRO SECTION -->
+<section class="intro-section">
+  <!-- Vinheta cinematográfica -->
+  <div class="vignette"></div>
+
+  <!-- Linha vertical inicial -->
+  <div class="v-line"></div>
+
+  <!-- Cena principal -->
+  <div class="scene">
+
+    <!-- Logo Mark com scan -->
+    <div class="logo-mark">
+      <div class="glow"></div>
+      <div class="scan-line"></div>
+      <img src="assets/logo-mark.png" alt="Logo Mark">
+    </div>
+
+    <!-- Divisor -->
+    <div class="divider-line"></div>
+
+    <!-- Wordmark -->
+    <div class="wordmark">
+      <div class="wordmark-title">FUNILA</div>
+      <div class="wordmark-sub">Sistema de Inteligência Comercial</div>
+    </div>
+
+  </div>
+
+  <!-- Em Breve -->
+  <div style="
+    position:absolute; top:36px; left:50%; transform:translateX(-50%);
+    display:flex; align-items:center; gap:8px;
+    background:rgba(15,17,21,0.8); border:1px solid #2A3242;
+    border-radius:100px; padding:7px 20px;
+    opacity:0; animation:fadeBtn 0.6s ease forwards; animation-delay:2.8s;
+    z-index: 20;
+  ">
+    <div style="width:6px;height:6px;border-radius:50%;background:#2563EB;animation:pulse 2s ease-in-out infinite;"></div>
+    <span style="font-family:'DM Sans',sans-serif;font-size:11px;font-weight:500;letter-spacing:0.25em;text-transform:uppercase;color:#4F5E75;">Em Breve</span>
+  </div>
+
+  <!-- UI -->
+  <div class="corner-tag">funila.com.br • 2026</div>
+  <button class="replay" onclick="replay()">↺ Replay</button>
+
+  <!-- Scroll Indicator -->
+  <div style="position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%); color: var(--text3); font-size: 24px; animation: bounce 2s infinite; opacity: 0; animation-delay: 3.5s; animation-fill-mode: forwards;">
+    ↓
+  </div>
+  <style>@keyframes bounce { 0%, 20%, 50%, 80%, 100% {transform: translateX(-50%) translateY(0);} 40% {transform: translateX(-50%) translateY(-10px);} 60% {transform: translateX(-50%) translateY(-5px);} }</style>
+</section>
+
+<!-- MAIN CONTENT -->
+<main>
+
+  <!-- HERO TEXT -->
+  <section class="section hero-text-section" style="padding-top: 140px;">
+    <h1 class="hero-title">Afunila o clique.<br>Entrega o cliente.</h1>
+    <p class="hero-desc">Transforme cliques em leads qualificados no WhatsApp. Chega de receber "Oi" de quem não tem perfil de compra.</p>
+    <a href="https://wa.me/5562996780498?text=Ol%C3%A1!%20Tenho%20interesse%20na%20lista%20de%20espera%20do%20Funila." class="btn btn-primary" target="_blank">Entrar na Lista de Espera</a>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- PROBLEM SECTION -->
+  <section class="section" id="problema">
+    <div class="section-label">01 — O Problema</div>
+    <h2 class="section-title">O Buraco Negro do WhatsApp</h2>
+
+    <div class="feature-grid">
+      <div class="card">
+        <h3 style="margin-bottom: 16px;">O Ciclo do Desperdício</h3>
+        <p style="color: var(--text2); font-size: 14px;">Você investe em anúncios. O lead clica e vai para o WhatsApp. O vendedor recebe apenas "Nome + Telefone" e perde horas qualificando curiosos. O ROI fica invisível.</p>
+      </div>
+      <div class="card">
+        <h3 style="margin-bottom: 16px;">Sem Rastreamento</h3>
+        <p style="color: var(--text2); font-size: 14px;">Qual campanha gerou a venda? Ninguém sabe. O WhatsApp é um buraco negro de dados onde a inteligência da campanha morre.</p>
+      </div>
+      <div class="card">
+        <h3 style="margin-bottom: 16px;">Investigação Manual</h3>
+        <p style="color: var(--text2); font-size: 14px;">Seu vendedor atua como um detetive, perguntando a mesma coisa para todo mundo. Lead frio é tratado igual ao quente.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SOLUTION SECTION -->
+  <section class="section" style="background: var(--bg);">
+    <div class="section-label">02 — A Solução</div>
+    <h2 class="section-title">As 4 Camadas de Inteligência</h2>
+    <p style="color: var(--text2); max-width: 600px; margin-bottom: 48px;">O Funila não é apenas um formulário. É um sistema completo que fica entre o seu anúncio e o seu WhatsApp.</p>
+
+    <div class="step-list">
+      <div class="step-item">
+        <div class="step-num">1</div>
+        <div>
+          <h4 style="margin-bottom: 8px;">Link Tracker</h4>
+          <p style="color: var(--text2); font-size: 14px;">Rastreamento silencioso. Saiba exatamente qual campanha, dispositivo e cidade gerou o clique.</p>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-num">2</div>
+        <div>
+          <h4 style="margin-bottom: 8px;">Squeeze Page Progressiva</h4>
+          <p style="color: var(--text2); font-size: 14px;">Uma landing page focada em conversão que qualifica o lead em 3 etapas simples (Perfil Profissional e Financeiro).</p>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-num">3</div>
+        <div>
+          <h4 style="margin-bottom: 8px;">Score Automático + Serasa</h4>
+          <p style="color: var(--text2); font-size: 14px;">O sistema calcula um Score Interno e consulta a API do Serasa (Plano Pro) para entregar a saúde financeira do lead.</p>
+        </div>
+      </div>
+      <div class="step-item" style="border-color: var(--blue);">
+        <div class="step-num" style="background: var(--blue); color: white;">4</div>
+        <div>
+          <h4 style="margin-bottom: 8px; color: var(--blue);">Entrega Pronta no WhatsApp</h4>
+          <p style="color: var(--text2); font-size: 14px;">O vendedor recebe uma mensagem pronta: "Olá, sou João, CLT há 4 anos, Renda R$4k...". Contexto total para fechar a venda.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MARKETS -->
+  <section class="section">
+    <div class="section-label">03 — Para Quem</div>
+    <h2 class="section-title">Feito para Converter</h2>
+    <div class="feature-grid">
+      <div class="card">
+        <h4 style="margin-bottom: 12px;">🏠 Corretores de Imóveis</h4>
+        <p style="font-size: 13px; color: var(--text2);">Pare de atender lead sem renda comprovada. Receba o perfil financeiro antes do "Oi".</p>
+      </div>
+      <div class="card">
+        <h4 style="margin-bottom: 12px;">📈 Agências de Tráfego</h4>
+        <p style="font-size: 13px; color: var(--text2);">Prove o ROI para seu cliente. Mostre quais campanhas geram leads qualificados, não apenas cliques.</p>
+      </div>
+      <div class="card">
+        <h4 style="margin-bottom: 12px;">🙏 Igrejas e Pastorais</h4>
+        <p style="font-size: 13px; color: var(--text2);">Centralize o cadastro de membros e visitantes. Saiba quem parou de frequentar.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- WAITLIST / COMING SOON -->
+  <section class="section waitlist-section">
+    <div class="coming-soon-badge">
+      <div style="width: 8px; height: 8px; background: var(--blue); border-radius: 50%;"></div>
+      Em Desenvolvimento
+    </div>
+    <h2 class="section-title">Chega de perder dinheiro com lead frio.</h2>
+    <p style="color: var(--text2); max-width: 600px; margin: 0 auto 40px;">O Funila está em fase final de construção. Garanta sua vaga na lista de espera para receber condições exclusivas.</p>
+
+    <div style="display: flex; flex-direction: column; align-items: center; gap: 24px;">
+      <a href="https://wa.me/5562996780498?text=Ol%C3%A1!%20Gostaria%20de%20entrar%20na%20lista%20de%20espera%20do%20Funila." class="btn btn-primary" target="_blank" style="padding: 16px 40px; font-size: 18px;">
+        Entrar na Lista de Espera
+      </a>
+
+      <a href="public/brandbook.html" style="color: var(--text3); font-size: 14px; text-decoration: none; border-bottom: 1px solid transparent; transition: all 0.2s;">
+        Conheça um pouco mais sobre nós →
+      </a>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="site-footer-inner">
+    <div>
+      <div class="footer-brand">FUNILA</div>
+      <div class="footer-meta" style="margin-top:4px;">Sistema de Inteligência Comercial</div>
+    </div>
+    <div>
+      <div class="footer-meta">Um produto <a href="https://rdpstudio.com.br/" target="_blank" style="color: var(--text2); text-decoration: none;">RDP Studio</a></div>
+      <div class="footer-meta" style="margin-top:4px;">Marcelo Rodrigues • 2026</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+function replay() {
+  const intro = document.querySelector('.intro-section');
+  const els = intro.querySelectorAll('[style*="animation"], .bar, .arrow, .scan-line, .glow, .wordmark, .divider-line, .logo-mark, .v-line, .replay, .corner-tag');
+
+  els.forEach(el => {
+    el.style.animation = 'none';
+    el.offsetHeight; // reflow
+    el.style.animation = '';
+  });
+
+  // Re-bind replay if needed, or just let it be.
+}
+</script>
+
+</body>
+</html>
