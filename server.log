@@ -1,0 +1,10 @@
+127.0.0.1 - - [19/Feb/2026 11:21:45] "GET /index.html HTTP/1.1" 200 -
+127.0.0.1 - - [19/Feb/2026 11:21:45] "GET /css/style.css HTTP/1.1" 200 -
+127.0.0.1 - - [19/Feb/2026 11:21:45] "GET /assets/logo.png HTTP/1.1" 200 -
+127.0.0.1 - - [19/Feb/2026 11:21:45] "GET /assets/logo-mark.png HTTP/1.1" 200 -
+127.0.0.1 - - [19/Feb/2026 11:21:48] "GET /public/brandbook.html HTTP/1.1" 200 -
+127.0.0.1 - - [19/Feb/2026 11:21:48] "GET /assets/logo-mark.png HTTP/1.1" 200 -
+127.0.0.1 - - [19/Feb/2026 11:21:48] "GET /assets/logo.png HTTP/1.1" 200 -
+127.0.0.1 - - [19/Feb/2026 11:21:50] "GET /public/brandbook.html HTTP/1.1" 200 -
+127.0.0.1 - - [19/Feb/2026 11:21:50] "GET /assets/logo.png HTTP/1.1" 200 -
+127.0.0.1 - - [19/Feb/2026 11:21:50] "GET /assets/logo-mark.png HTTP/1.1" 200 -
