@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark-theme">
+<head>
+    <!--
+      FUNILA — Sistema de Inteligência Comercial
+      Desenvolvido por RDP Studio
+      Copyright © 2026 — Todos os direitos reservados.
+      Propriedade intelectual exclusiva.
+    -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="RDP Studio">
+    <meta name="copyright" content="RDP Studio">
+    <title>Funila - Qualificação</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Colors from Manual Chapter 11 */
+            --bg-primary: #0F1115;
+            --bg-secondary: #161A22;
+            --card-bg: #1C212B;
+            --hover: #242B38;
+            --border: #2A3242;
+            --text-primary: #F8FAFC;
+            --text-secondary: #9CA3AF;
+            --text-disabled: #6B7280;
+            --accent: #2563EB;
+            --accent-hover: #1D4ED8;
+            --accent-soft: #DBEAFE;
+
+            --status-hot: #22C55E;
+            --status-warm: #F59E0B;
+            --status-cold: #38BDF8;
+            --status-converted: #16A34A;
+            --status-error: #EF4444;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 480px;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 32px 24px;
+            box-shadow: 0 4px 32px rgba(0,0,0,0.4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 32px;
+            gap: 8px;
+        }
+        .progress-dot {
+            width: 10px; height: 10px;
+            border-radius: 50%;
+            background: var(--border);
+            transition: all 0.3s ease;
+        }
+        .progress-dot.active { background: var(--accent); transform: scale(1.2); }
+        .progress-dot.completed { background: var(--accent); }
+
+        .step { display: none; animation: fadeIn 0.4s ease; }
+        .step.active { display: block; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        h1 { font-size: 22px; font-weight: 700; text-align: center; margin-bottom: 8px; color: var(--text-primary); }
+        p { font-size: 15px; color: var(--text-secondary); text-align: center; margin-bottom: 24px; line-height: 1.5; }
+
+        .input-group { margin-bottom: 16px; text-align: left; }
+        label { display: block; font-size: 13px; font-weight: 500; margin-bottom: 6px; color: var(--text-primary); }
+        input[type="text"], input[type="tel"], input[type="number"] {
+            width: 100%;
+            background: var(--bg-primary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 12px 16px;
+            color: var(--text-primary);
+            font-size: 15px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(37,99,235,0.15); }
+        input::placeholder { color: var(--text-disabled); }
+
+        .btn {
+            width: 100%;
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 8px;
+            font-size: 16px; font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+        }
+        .btn:hover { background: var(--accent-hover); }
+        .btn:disabled { opacity: 0.5; cursor: not-allowed; background: var(--bg-secondary); color: var(--text-disabled); }
+
+        .btn-outline {
+            background: transparent; border: 1px solid var(--border); color: var(--text-secondary); margin-top: 12px;
+        }
+        .btn-outline:hover { border-color: var(--text-secondary); color: var(--text-primary); background: transparent; }
+
+        .option-grid { display: grid; grid-template-columns: 1fr; gap: 12px; margin-bottom: 24px; }
+        .option-btn {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            padding: 16px;
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 15px; font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+        }
+        .option-btn:hover { background: var(--hover); }
+        .option-btn.selected {
+            background: rgba(37,99,235,0.1);
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .checkbox-wrapper { display: flex; align-items: flex-start; gap: 12px; font-size: 13px; color: var(--text-secondary); text-align: left; margin-bottom: 24px; }
+        input[type="checkbox"] { width: 16px; height: 16px; margin-top: 3px; accent-color: var(--accent); }
+
+        .secure-note { font-size: 12px; color: var(--text-disabled); display: flex; align-items: center; justify-content: center; gap: 6px; margin-top: 16px; }
+
+        /* Step 4 specific */
+        .success-icon { font-size: 48px; margin-bottom: 16px; display: block; }
+        .score-badge {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 100px;
+            font-size: 13px; font-weight: 600;
+            margin-bottom: 24px;
+        }
+        .btn-whatsapp { background: #25D366; color: white; }
+        .btn-whatsapp:hover { background: #1ebc57; }
+
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="progress-container" id="progress-bar">
+        <div class="progress-dot active"></div>
+        <div class="progress-dot"></div>
+        <div class="progress-dot"></div>
+    </div>
+
+    <!-- Step 1: Identity -->
+    <div id="step-1" class="step active">
+        <div style="text-align: center; margin-bottom: 24px;">
+            <img src="../../assets/logo.png" alt="Logo" style="height: 32px; margin-bottom: 16px;">
+            <h1>Vamos começar?</h1>
+            <p>Preencha seus dados para receber uma análise personalizada.</p>
+        </div>
+
+        <div class="input-group">
+            <label>Nome completo</label>
+            <input type="text" id="name" placeholder="Seu nome" required>
+        </div>
+        <div class="input-group">
+            <label>WhatsApp</label>
+            <input type="tel" id="phone" placeholder="(DDD) 99999-9999" required>
+        </div>
+
+        <button class="btn" id="btn-step-1" disabled>Continuar →</button>
+
+        <div class="secure-note">
+            🔒 Seus dados são protegidos e não serão compartilhados
+        </div>
+    </div>
+
+    <!-- Step 2: Professional -->
+    <div id="step-2" class="step">
+        <h1>Profissional</h1>
+        <p>Você possui carteira assinada (CLT)?</p>
+
+        <div class="option-grid" style="grid-template-columns: 1fr 1fr;">
+            <button class="option-btn" data-value="true" onclick="selectClt(true)">Sim</button>
+            <button class="option-btn" data-value="false" onclick="selectClt(false)">Não</button>
+        </div>
+
+        <div id="clt-years-container" class="hidden">
+            <p style="margin-bottom: 12px;">Há quanto tempo?</p>
+            <div class="option-grid">
+                <button class="option-btn clt-opt" onclick="selectCltTime('Menos de 1 ano')">Menos de 1 ano</button>
+                <button class="option-btn clt-opt" onclick="selectCltTime('1-2 anos')">1-2 anos</button>
+                <button class="option-btn clt-opt" onclick="selectCltTime('2-3 anos')">2-3 anos</button>
+                <button class="option-btn clt-opt" onclick="selectCltTime('Mais de 3 anos')">Mais de 3 anos</button>
+            </div>
+        </div>
+
+        <button class="btn btn-outline" onclick="goToStep(1)">← Voltar</button>
+    </div>
+
+    <!-- Step 3: Financial -->
+    <div id="step-3" class="step">
+        <h1>Financeiro</h1>
+
+        <div class="input-group">
+            <label>Qual sua renda mensal aproximada?</label>
+            <div class="option-grid" id="income-options">
+                <button class="option-btn inc-opt" onclick="selectIncome('Abaixo de R$1.500')">Abaixo de R$1.500</button>
+                <button class="option-btn inc-opt" onclick="selectIncome('R$1.500–R$3.000')">R$1.500–R$3.000</button>
+                <button class="option-btn inc-opt" onclick="selectIncome('R$3.000–R$5.000')">R$3.000–R$5.000</button>
+                <button class="option-btn inc-opt" onclick="selectIncome('Acima de R$5.000')">Acima de R$5.000</button>
+            </div>
+        </div>
+
+        <div class="input-group">
+            <label>Já tentou fazer um financiamento antes?</label>
+            <div class="option-grid" style="grid-template-columns: 1fr 1fr; margin-bottom: 16px;">
+                <button class="option-btn fin-opt" onclick="selectFinancing(true)">Sim</button>
+                <button class="option-btn fin-opt" onclick="selectFinancing(false)">Não</button>
+            </div>
+        </div>
+
+        <div class="input-group">
+            <label>CPF (Opcional - agiliza a análise)</label>
+            <input type="text" id="cpf" placeholder="000.000.000-00">
+        </div>
+
+        <div class="checkbox-wrapper">
+            <input type="checkbox" id="consent" required>
+            <label for="consent" style="font-weight: 400; margin-bottom: 0;">Autorizo o uso dos meus dados para contato comercial, conforme nossa Política de Privacidade.</label>
+        </div>
+
+        <button class="btn" id="btn-submit" disabled>Enviar e falar com corretor</button>
+        <button class="btn btn-outline" onclick="goToStep(2)">← Voltar</button>
+
+        <div style="text-align: center; margin-top: 16px;">
+            <a href="#" style="font-size: 12px; color: var(--text-disabled); text-decoration: none;">Política de Privacidade</a>
+        </div>
+    </div>
+
+    <!-- Step 4: Confirmation -->
+    <div id="step-4" class="step" style="text-align: center;">
+        <span class="success-icon">✅</span>
+        <h1>Pronto!</h1>
+        <p>Seus dados foram recebidos com sucesso.</p>
+
+        <div id="result-badge" class="score-badge" style="background: rgba(37,99,235,0.1); color: var(--accent);">
+            Perfil analisado
+        </div>
+
+        <a id="whatsapp-link" href="#" class="btn btn-whatsapp" target="_blank">
+            💬 Falar agora no WhatsApp
+        </a>
+
+        <p style="font-size: 13px; margin-top: 16px;">Você também receberá um contato em breve.</p>
+    </div>
+
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>

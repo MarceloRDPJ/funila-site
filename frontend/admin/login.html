@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark-theme">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Funila - Login</title>
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Supabase JS -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        :root {
+            --bg-primary: #0F1115;
+            --bg-secondary: #161A22;
+            --card-bg: #1C212B;
+            --border: #2A3242;
+            --text-primary: #F8FAFC;
+            --text-secondary: #9CA3AF;
+            --accent: #2563EB;
+            --accent-hover: #1D4ED8;
+            --status-error: #EF4444;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            font-family: 'Inter', sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .login-card {
+            background: var(--card-bg);
+            width: 400px;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 4px 32px rgba(0,0,0,0.4);
+            text-align: center;
+            border: 1px solid var(--border);
+        }
+
+        .logo { font-size: 28px; font-weight: 700; color: var(--accent); margin-bottom: 8px; }
+        .subtitle { font-size: 14px; color: var(--text-secondary); margin-bottom: 24px; }
+        .separator { border-top: 1px solid var(--border); margin: 24px 0; }
+
+        .form-group { text-align: left; margin-bottom: 16px; }
+        label { display: block; font-size: 14px; font-weight: 500; margin-bottom: 8px; color: var(--text-primary); }
+
+        input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            outline: none;
+            font-size: 15px;
+            transition: border-color 0.2s;
+        }
+        input:focus { border-color: var(--accent); }
+        input::placeholder { color: #6B7280; }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            background: var(--accent);
+            color: white;
+            font-weight: 600;
+            font-size: 15px;
+            cursor: pointer;
+            transition: background 0.2s;
+            margin-top: 8px;
+        }
+        button:hover { background: var(--accent-hover); }
+        button:disabled { opacity: 0.7; cursor: wait; }
+
+        .error-msg {
+            background: #FEF2F2;
+            color: var(--status-error);
+            padding: 12px;
+            border-radius: 8px;
+            border-left: 3px solid var(--status-error);
+            margin-top: 16px;
+            font-size: 13px;
+            display: none;
+            text-align: left;
+        }
+
+        .footer { font-size: 12px; color: var(--text-secondary); margin-top: 24px; }
+
+        .forgot-pass {
+            display: block;
+            margin-top: 16px;
+            font-size: 13px;
+            color: var(--text-secondary);
+            text-decoration: none;
+        }
+        .forgot-pass:hover { color: var(--text-primary); }
+    </style>
+</head>
+<body>
+
+    <div class="login-card">
+        <div class="logo">FUNILA</div>
+        <div class="subtitle">Sistema de Inteligência Comercial</div>
+        <div class="separator"></div>
+
+        <form id="login-form">
+            <div class="form-group">
+                <label for="email">E-mail</label>
+                <input type="email" id="email" required placeholder="seu@email.com">
+            </div>
+            <div class="form-group">
+                <label for="password">Senha</label>
+                <input type="password" id="password" required placeholder="••••••••">
+            </div>
+            <button type="submit" id="btn-login">Entrar</button>
+        </form>
+
+        <div id="error-msg" class="error-msg">E-mail ou senha incorretos.</div>
+
+        <a href="#" class="forgot-pass">Esqueceu a senha?</a>
+
+        <div class="footer">© 2026 Funila · RDP Studio</div>
+    </div>
+
+    <!-- Auth logic -->
+    <script src="auth.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", async () => {
+             // Check session first
+             await requireAuth();
+
+             const form = document.getElementById("login-form");
+             const btn = document.getElementById("btn-login");
+             const errMsg = document.getElementById("error-msg");
+
+             form.addEventListener("submit", async (e) => {
+                 e.preventDefault();
+                 const email = document.getElementById("email").value;
+                 const password = document.getElementById("password").value;
+
+                 btn.disabled = true;
+                 btn.innerText = "Entrando...";
+                 errMsg.style.display = "none";
+
+                 try {
+                     await login(email, password);
+                     window.location.href = "index.html";
+                 } catch (err) {
+                     console.error("Login failed:", err);
+                     errMsg.style.display = "block";
+                     errMsg.innerText = "E-mail ou senha incorretos.";
+                     btn.disabled = false;
+                     btn.innerText = "Entrar";
+                 }
+             });
+        });
+    </script>
+</body>
+</html>
