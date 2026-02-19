@@ -1,7 +1,7 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  --bg:       #0A0C10;
+  --bg:       #0F1115;
   --bg2:      #0F1217;
   --bg3:      #161B24;
   --card:     #1A2030;
@@ -133,4 +133,41 @@ h3 { font-weight: 600; letter-spacing: -0.01em; }
 }
 .card:hover {
   border-color: var(--border2);
+}
+
+/* ── FOOTER ── */
+.site-footer {
+  border-top: 1px solid var(--border);
+  padding: 40px 48px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 1100px;
+  margin: 0 auto;
+  background: var(--bg);
+}
+
+.footer-brand {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 16px;
+  letter-spacing: 0.05em;
+  color: var(--text);
+}
+
+.footer-meta {
+  font-size: 13px;
+  color: var(--text3);
+}
+
+@media (max-width: 768px) {
+  .site-footer {
+    flex-direction: column;
+    gap: 24px;
+    text-align: center;
+    padding: 40px 24px;
+  }
+  .site-footer > div {
+    text-align: center !important;
+  }
 }

@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>FUNILA — Sistema de Inteligência Comercial</title>
 <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png">
-<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/android-chrome-512x512.png">
+<link rel="icon" type="image/png" sizes="16x16" href="assets/android-chrome-512x512.png">
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css">
 <style>
@@ -43,44 +43,18 @@
     animation-delay: 0.2s;
   }
 
-  .bar-wrap {
-    display: flex;
-    align-items: center;
-    overflow: hidden;
-  }
-
-  .bar {
-    height: 22px;
-    border-radius: 4px;
-    transform: translateX(-120%);
+  .logo-mark img {
+    width: 130px;
+    height: auto;
     opacity: 0;
+    transform: translateX(-20px);
+    animation: slideInLogo 0.8s cubic-bezier(0.16,1,0.3,1) forwards;
+    animation-delay: 0.5s;
   }
 
-  .arrow {
-    width: 0;
-    height: 0;
-    border-style: solid;
-    transform: translateX(-120%);
-    opacity: 0;
-    margin-left: -1px;
-  }
-
-  /* Barra 1 — maior */
-  .bar-1 { width: 130px; background: #2563EB; animation: slideIn 0.6s cubic-bezier(0.16,1,0.3,1) forwards; animation-delay: 0.5s; }
-  .arrow-1 { border-width: 11px 0 11px 18px; border-color: transparent transparent transparent #2563EB; animation: slideIn 0.6s cubic-bezier(0.16,1,0.3,1) forwards; animation-delay: 0.5s; }
-
-  /* Barra 2 — média */
-  .bar-2 { width: 100px; background: #1E40AF; animation: slideIn 0.6s cubic-bezier(0.16,1,0.3,1) forwards; animation-delay: 0.75s; }
-  .arrow-2 { border-width: 11px 0 11px 18px; border-color: transparent transparent transparent #1E40AF; animation: slideIn 0.6s cubic-bezier(0.16,1,0.3,1) forwards; animation-delay: 0.75s; }
-
-  /* Barra 3 — menor */
-  .bar-3 { width: 70px; background: #1D4ED8; animation: slideIn 0.6s cubic-bezier(0.16,1,0.3,1) forwards; animation-delay: 1.0s; }
-  .arrow-3 { border-width: 11px 0 11px 18px; border-color: transparent transparent transparent #1D4ED8; animation: slideIn 0.6s cubic-bezier(0.16,1,0.3,1) forwards; animation-delay: 1.0s; }
-
-  @keyframes slideIn {
-    0%   { transform: translateX(-140%); opacity: 0; }
-    60%  { opacity: 1; }
-    100% { transform: translateX(0); opacity: 1; }
+  @keyframes slideInLogo {
+    0%   { opacity: 0; transform: translateX(-20px); }
+    100% { opacity: 1; transform: translateX(0); }
   }
 
   /* Scan line */
@@ -330,6 +304,49 @@
     border: 1px solid rgba(37,99,235,0.2);
   }
 
+  /* ── FOOTER ── */
+  .site-footer {
+    border-top: 1px solid var(--border);
+    background: var(--bg);
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+
+  .site-footer-inner {
+    width: 100%;
+    max-width: 1100px;
+    padding: 40px 48px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .footer-brand {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 16px;
+    letter-spacing: 0.05em;
+    color: var(--text);
+  }
+
+  .footer-meta {
+    font-size: 13px;
+    color: var(--text3);
+  }
+
+  @media (max-width: 768px) {
+    .site-footer-inner {
+      flex-direction: column;
+      gap: 24px;
+      text-align: center;
+      padding: 40px 24px;
+    }
+    .site-footer-inner > div {
+      text-align: center !important;
+    }
+  }
+
   /* Responsive fixes for Intro */
   @media (max-width: 600px) {
     .wordmark-title { font-size: 36px; }
@@ -342,18 +359,22 @@
 <!-- NAVIGATION -->
 <nav style="
   position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 0 32px; height: 64px;
+  height: 64px;
   background: rgba(15, 17, 21, 0.85);
   backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--border);
+  display: flex; justify-content: center;
 ">
-  <div style="font-family: 'Syne', sans-serif; font-weight: 800; font-size: 18px; letter-spacing: 0.1em; color: var(--text);">FUNILA<span style="color: var(--blue);">.</span></div>
-  <a href="public/brandbook.html" class="btn-outline" style="
-    text-decoration: none; padding: 6px 16px; font-size: 13px; border-radius: 6px;
-    font-family: 'DM Sans', sans-serif; font-weight: 500;
-    transition: all 0.2s;
-  ">Conheça a Marca</a>
+  <div style="width: 100%; max-width: 1100px; padding: 0 48px; display: flex; align-items: center; justify-content: space-between;">
+    <a href="#" style="display: flex; align-items: center;">
+      <img src="assets/logo.png" alt="FUNILA" style="height: 32px;">
+    </a>
+    <a href="public/brandbook.html" class="btn-outline" style="
+      text-decoration: none; padding: 6px 16px; font-size: 13px; border-radius: 6px;
+      font-family: 'DM Sans', sans-serif; font-weight: 500;
+      transition: all 0.2s;
+    ">Conheça a Marca</a>
+  </div>
 </nav>
 
 <!-- INTRO SECTION -->
@@ -371,19 +392,7 @@
     <div class="logo-mark">
       <div class="glow"></div>
       <div class="scan-line"></div>
-
-      <div class="bar-wrap">
-        <div class="bar bar-1"></div>
-        <div class="arrow arrow-1"></div>
-      </div>
-      <div class="bar-wrap">
-        <div class="bar bar-2"></div>
-        <div class="arrow arrow-2"></div>
-      </div>
-      <div class="bar-wrap">
-        <div class="bar bar-3"></div>
-        <div class="arrow arrow-3"></div>
-      </div>
+      <img src="assets/logo-mark.png" alt="Logo Mark">
     </div>
 
     <!-- Divisor -->
@@ -455,7 +464,7 @@
   </section>
 
   <!-- SOLUTION SECTION -->
-  <section class="section" style="background: var(--bg2);">
+  <section class="section" style="background: var(--bg);">
     <div class="section-label">02 — A Solução</div>
     <h2 class="section-title">As 4 Camadas de Inteligência</h2>
     <p style="color: var(--text2); max-width: 600px; margin-bottom: 48px;">O Funila não é apenas um formulário. É um sistema completo que fica entre o seu anúncio e o seu WhatsApp.</p>
@@ -534,14 +543,16 @@
 
 </main>
 
-<footer>
-  <div>
-    <div class="footer-brand">FUNILA</div>
-    <div class="footer-meta" style="margin-top:4px;">Sistema de Inteligência Comercial</div>
-  </div>
-  <div style="text-align:right;">
-    <div class="footer-meta">Um produto <a href="https://rdpstudio.com.br/" target="_blank" style="color: var(--text2); text-decoration: none;">RDP Studio</a></div>
-    <div class="footer-meta" style="margin-top:4px;">Marcelo Rodrigues • 2026</div>
+<footer class="site-footer">
+  <div class="site-footer-inner">
+    <div>
+      <div class="footer-brand">FUNILA</div>
+      <div class="footer-meta" style="margin-top:4px;">Sistema de Inteligência Comercial</div>
+    </div>
+    <div>
+      <div class="footer-meta">Um produto <a href="https://rdpstudio.com.br/" target="_blank" style="color: var(--text2); text-decoration: none;">RDP Studio</a></div>
+      <div class="footer-meta" style="margin-top:4px;">Marcelo Rodrigues • 2026</div>
+    </div>
   </div>
 </footer>
 
